@@ -1,42 +1,152 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Cherry Was Here - Custom Styles */
+.world-map {
+  width: 100%;
+  height: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.world-map svg {
+  width: 100%;
+  height: 100%;
 }
 
-@keyframes logo-spin {
-  from {
+/* Map tooltip */
+.map-tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+/* Country hover effects */
+.country-path {
+  transition: all 0.2s ease;
+}
+
+.country-path:hover {
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+/* Custom scrollbar for country list */
+.country-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.country-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.country-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.country-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Progress bar animation */
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Modal animations */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .world-map {
+    height: 300px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading states */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid #3498db;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Color picker styling */
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.card {
-  padding: 2em;
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
 }
 
-.read-the-docs {
-  color: #888;
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+/* Button hover effects */
+.btn-primary {
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Country card animations */
+.country-card {
+  transition: all 0.2s ease;
+}
+
+.country-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

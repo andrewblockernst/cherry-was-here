@@ -26,17 +26,20 @@ Una aplicación web interactiva para mapear y visualizar todos los países que h
 ## 🛠️ Instalación y Desarrollo
 
 1. **Clona el repositorio**:
+
    ```bash
    git clone <tu-repo>
    cd cherry-was-here
    ```
 
 2. **Instala las dependencias**:
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 3. **Inicia el servidor de desarrollo**:
+
    ```bash
    npm run dev
    ```
