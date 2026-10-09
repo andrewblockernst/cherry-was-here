@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Country, Era, Moment, Visibility } from '../../shared/types/cherry'
+import type { Country, Era, Moment, Visibility } from '../../shared/types/app'
 
 const props = defineProps<{
   open: boolean
@@ -137,11 +137,11 @@ async function submit() {
             </label>
           </div>
 
-          <p v-if="error" role="alert" class="text-sm text-cherry-700">{{ error }}</p>
+          <p v-if="error" role="alert" class="text-sm text-accent-700">{{ error }}</p>
 
           <div class="flex justify-end gap-2 pt-2">
             <button type="button" class="btn-ghost" @click="emit('close')">Cancelar</button>
-            <button type="submit" :disabled="saving" class="btn-cherry">{{ saving ? 'Guardando…' : 'Guardar' }}</button>
+            <button type="submit" :disabled="saving" class="btn-accent">{{ saving ? 'Guardando…' : 'Guardar' }}</button>
           </div>
         </form>
       </div>

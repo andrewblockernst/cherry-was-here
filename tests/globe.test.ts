@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { countryFillExpression, focusFor, groupByEra, momentFeatures, rotateLng } from '../app/utils/globe'
-import type { Era, Moment } from '../shared/types/cherry'
+import type { Era, Moment } from '../shared/types/app'
 
 const moment = (over: Partial<Moment>): Moment => ({
   id: 1, title: 'Trip', body: null, date: '2020-01-02', location: null, country_code: null,

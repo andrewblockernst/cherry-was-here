@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Vintage atlas palette: aged paper, faded sea, ink-brown lines, cherry as the single accent. */
+/* Vintage atlas palette: aged paper, faded sea, ink-brown lines, a cherry red as the single accent. */
 @theme {
   --font-sans: "Lora", Georgia, serif;
   --font-display: "Fraunces", "Playfair Display", Georgia, serif;
@@ -28,16 +28,16 @@
   --color-space-900: #0d1119;
   --color-space-800: #151b28;
 
-  --color-cherry-50: #fff1f2;
-  --color-cherry-100: #ffe4e6;
-  --color-cherry-200: #fecdd3;
-  --color-cherry-300: #fda4af;
-  --color-cherry-400: #fb7185;
-  --color-cherry-500: #f43f5e;
-  --color-cherry-600: #e11d48;
-  --color-cherry-700: #be123c;
-  --color-cherry-800: #9f1239;
-  --color-cherry-900: #881337;
+  --color-accent-50: #fff1f2;
+  --color-accent-100: #ffe4e6;
+  --color-accent-200: #fecdd3;
+  --color-accent-300: #fda4af;
+  --color-accent-400: #fb7185;
+  --color-accent-500: #f43f5e;
+  --color-accent-600: #e11d48;
+  --color-accent-700: #be123c;
+  --color-accent-800: #9f1239;
+  --color-accent-900: #881337;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -61,7 +61,7 @@ html, body {
 }
 
 button { cursor: pointer; }
-:focus-visible { outline: 2px solid var(--color-cherry-600); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--color-accent-600); outline-offset: 2px; }
 
 /* Aged paper surface used by the drawer and modal. */
 .paper {
@@ -165,21 +165,21 @@ button { cursor: pointer; }
   font-size: 0.875rem;
   color: var(--color-ink-900);
 }
-.field:focus { border-color: var(--color-cherry-600); outline: 2px solid rgb(225 29 72 / 0.25); outline-offset: 0; }
+.field:focus { border-color: var(--color-accent-600); outline: 2px solid rgb(225 29 72 / 0.25); outline-offset: 0; }
 .label { font: 400 0.7rem/1 var(--font-type); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-600); }
-.btn-cherry {
+.btn-accent {
   border-radius: 2px;
-  background: var(--color-cherry-700);
+  background: var(--color-accent-700);
   padding: 0.55rem 1rem;
   font: 400 0.8rem/1 var(--font-type);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-paper-50);
-  box-shadow: 0 2px 0 var(--color-cherry-900);
+  box-shadow: 0 2px 0 var(--color-accent-900);
 }
-.btn-cherry:hover { background: var(--color-cherry-600); }
-.btn-cherry:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--color-cherry-900); }
-.btn-cherry:disabled { opacity: 0.55; }
+.btn-accent:hover { background: var(--color-accent-600); }
+.btn-accent:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--color-accent-900); }
+.btn-accent:disabled { opacity: 0.55; }
 .btn-ghost { border-radius: 2px; padding: 0.5rem 0.9rem; font: 400 0.8rem/1 var(--font-type); color: var(--color-ink-700); }
 .btn-ghost:hover { background: rgb(82 61 44 / 0.1); }
 
@@ -259,8 +259,8 @@ button { cursor: pointer; }
   background: var(--color-ink-700);
   transition: transform 0.4s var(--ease-out-expo), background-color 0.3s ease;
 }
-.switch[aria-checked="true"] { background: var(--color-cherry-100); }
-.switch[aria-checked="true"] > span { transform: translateX(1.3rem); background: var(--color-cherry-700); }
+.switch[aria-checked="true"] { background: var(--color-accent-100); }
+.switch[aria-checked="true"] > span { transform: translateX(1.3rem); background: var(--color-accent-700); }
 .switch:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Motion off (in-app toggle or OS setting): no animation or transition anywhere. */

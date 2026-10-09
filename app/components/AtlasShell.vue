@@ -31,8 +31,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 <template>
   <div>
-    <NuxtLink to="/" class="brand" aria-label="Cherry Was Here, inicio">
-      <span class="brand-title">Cherry <em>Was</em> Here</span>
+    <NuxtLink to="/" class="brand" aria-label="La vida es una, inicio">
+      <span class="brand-title">La vida <em>es</em> una</span>
       <span class="brand-tag">un atlas de momentos</span>
     </NuxtLink>
 
@@ -113,7 +113,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 }
 .brand { animation: brand-in 1.2s var(--ease-out-expo) 0.5s both; }
 .brand-title { font: 600 1.45rem/1.1 var(--font-display); font-variation-settings: "SOFT" 100, "opsz" 72; letter-spacing: -0.01em; }
-.brand-title em { color: var(--color-cherry-700); font-weight: 500; }
+.brand-title em { color: var(--color-accent-700); font-weight: 500; }
 .brand-tag { font: 400 0.6rem/1.2 var(--font-type); letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-ink-600); }
 
 .burger {

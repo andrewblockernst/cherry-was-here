@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Moment } from '../../shared/types/cherry'
+import type { Moment } from '../../shared/types/app'
 
 const props = defineProps<{
   moment: Moment
@@ -17,8 +17,8 @@ const mark = computed(() => postmark(props.moment.date))
   <li class="stamp-item stamp-shadow relative">
     <button
       class="stamp block w-full py-3.5 pl-4 pr-14 text-left transition-transform duration-300 ease-out-quart hover:-translate-y-0.5"
-      :class="active ? 'bg-cherry-50 -translate-y-0.5' : ''"
-      :style="{ borderLeft: `5px solid ${color || 'var(--color-cherry-700)'}` }"
+      :class="active ? 'bg-accent-50 -translate-y-0.5' : ''"
+      :style="{ borderLeft: `5px solid ${color || 'var(--color-accent-700)'}` }"
       @click="emit('pick', moment)"
       @mouseenter="emit('hover', moment)"
       @mouseleave="emit('hover', null)"
@@ -43,7 +43,7 @@ const mark = computed(() => postmark(props.moment.date))
 
     <button
       v-if="editable"
-      class="absolute right-1 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-cherry-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
+      class="absolute right-1 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-accent-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
       aria-label="Eliminar"
       @click="emit('delete', moment.id)"
     >

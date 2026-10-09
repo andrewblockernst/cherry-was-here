@@ -9,7 +9,7 @@ export type UserRow = typeof users.$inferSelect
 
 const BCRYPT_COST = 12
 // Used to burn the same time when the email is unknown (timing parity).
-const DUMMY_HASH = bcrypt.hashSync('cherry-dummy', BCRYPT_COST)
+const DUMMY_HASH = bcrypt.hashSync('lavidaesuna-dummy', BCRYPT_COST)
 
 const byEmail = (email: string) => sql`${users.email} = ${email} COLLATE NOCASE`
 

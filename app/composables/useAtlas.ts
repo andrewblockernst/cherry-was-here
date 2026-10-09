@@ -1,4 +1,4 @@
-import type { CountryCounts, EraWithMoments, Moment, PublicUser } from '../../shared/types/cherry'
+import type { CountryCounts, EraWithMoments, Moment, PublicUser } from '../../shared/types/app'
 
 export type Panel = 'explore' | 'me' | 'options'
 export type Owner = 'world' | 'user' | 'me'

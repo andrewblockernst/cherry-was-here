@@ -1,4 +1,4 @@
-import type { Country } from '../../shared/types/cherry'
+import type { Country } from '../../shared/types/app'
 
 /** Country list from the API plus an iso2 -> Spanish display name lookup (shared by key, fetched once). */
 export function useCountries() {

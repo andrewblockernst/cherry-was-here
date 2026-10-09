@@ -11,8 +11,8 @@ export const PALETTE = {
   inkSoft: '#7A624D',
   halo: '#F7EEDB',
   road: '#DCCDA7',
-  cherry: '#BE123C',
-  cherryDeep: '#881337',
+  accent: '#BE123C',
+  accentDeep: '#881337',
 } as const
 
 /** Warm atmosphere around the globe; the space behind it is the page background. */

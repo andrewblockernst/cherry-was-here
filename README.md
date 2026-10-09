@@ -1,4 +1,4 @@
-# Cherry Was Here 🍒
+# La vida es una
 
 Una app web para mapear tu vida en dos vistas que comparten datos:
 
@@ -14,7 +14,7 @@ Un `moment` puede tener país (aparece en el globo) y pertenecer a una era (apar
 | Framework | Nuxt 4 (Vue 3) + Nitro (rutas de servidor en `server/api`) |
 | DB | Drizzle ORM + libSQL: archivo SQLite en local, Turso en producción |
 | Auth | email + contraseña (bcryptjs), sesión por cookie sellada con `nuxt-auth-utils` |
-| Estilos | Tailwind CSS v4: paleta papel/tinta/mar y escala `cherry` como tokens en `app/assets/css/main.css`; tipografías Fraunces, Lora y Special Elite (Google Fonts) |
+| Estilos | Tailwind CSS v4: paleta papel/tinta/mar y escala `accent` como tokens en `app/assets/css/main.css`; tipografías Fraunces, Lora y Special Elite (Google Fonts) |
 | Mapa | `maplibre-gl` con proyección globo, estilo OpenFreeMap (sin API key) recoloreado en `app/utils/atlasStyle.ts` y países de Natural Earth 110m |
 | Tests | Vitest |
 
@@ -25,7 +25,7 @@ Requiere Node.js 22+ y npm.
 ```bash
 npm i
 cp .env.example .env     # completá NUXT_SESSION_PASSWORD (32+ caracteres)
-npm run db:migrate       # crea las tablas en data/cherry.db
+npm run db:migrate       # crea las tablas en data/lavidaesuna.db
 npm run db:seed          # carga la tabla countries
 npm run dev              # http://localhost:3000
 ```
@@ -49,7 +49,7 @@ Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 
 | Variable | Descripción |
 |----------|-------------|
-| `DATABASE_URL` | `file:./data/cherry.db` en local; URL `libsql://…` de Turso en producción |
+| `DATABASE_URL` | `file:./data/lavidaesuna.db` en local; URL `libsql://…` de Turso en producción |
 | `DATABASE_AUTH_TOKEN` | Token de Turso (vacío en local) |
 | `NUXT_SESSION_PASSWORD` | Clave para sellar la cookie de sesión, mínimo 32 caracteres. Nunca la subas al repo |
 
@@ -57,7 +57,7 @@ Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 
 Hay un único globo a pantalla completa que persiste entre rutas; todo lo demás son capas encima:
 
-- **Marca** "Cherry Was Here" arriba al centro y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
+- **Marca** "La vida es una" arriba al centro y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
 - **Menú lateral** con tres pestañas: *Explorar* (vidas públicas), *Tu vida* (tu timeline, crear y borrar moments, o entrar / crear cuenta) y *Opciones* (animaciones y créditos).
 - Los moments se muestran como **estampillas** con matasellos en las listas y en los popups del globo. Pasar el mouse por uno resalta su país; hacer click vuela hasta él.
 - En tu mapa (`/me`), hacer click en un país abre el formulario de nuevo moment con ese país.
