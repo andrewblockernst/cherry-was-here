@@ -136,6 +136,17 @@ describe('era and moment colors', () => {
   })
 })
 
+describe('moment coordinates', () => {
+  it('stores latitude/longitude, updatable to null, and rejects out-of-range values', async () => {
+    const m = ok(await createMoment(db, a, { title: 'M', date: '2020-01-01', latitude: -34.6, longitude: -58.38 }))
+    expect([m.latitude, m.longitude]).toEqual([-34.6, -58.38])
+    const u = ok((await updateMoment(db, a, m.id, { latitude: null, longitude: null }))!)
+    expect([u.latitude, u.longitude]).toEqual([null, null])
+    expect(await createMoment(db, a, { title: 'M', date: '2020-01-01', latitude: 91, longitude: 0 })).toMatchObject({ ok: false })
+    expect(await createMoment(db, a, { title: 'M', date: '2020-01-01', latitude: 0, longitude: -181 })).toMatchObject({ ok: false })
+  })
+})
+
 describe('era slug, order and years', () => {
   it('derives a unique slug from the title when omitted', async () => {
     const e1 = ok(await createEra(db, a, { title: 'Época Dorada!', start_year: 2000 }))
