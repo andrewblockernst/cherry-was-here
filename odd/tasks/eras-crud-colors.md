@@ -51,3 +51,4 @@ Route evidence: 4+ files to understand and 2+ non-trivial files to write, so map
 - T4: moment edit mode + optional own color with inherited preview, stamp edit button; `npm test` 52 passed, `npx nuxi typecheck` clean.
 - T4 commit: d1acb23.
 - T5: README updated.
+- T5 commit: bab5afe. Final: npm test 52 passed, typecheck clean, build OK.
