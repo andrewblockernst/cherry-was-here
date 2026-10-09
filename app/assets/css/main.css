@@ -191,3 +191,23 @@ button { cursor: pointer; }
 }
 .maplibregl-popup-tip { display: none; }
 .maplibregl-ctrl-attrib { background: rgb(243 233 210 / 0.8) !important; font-family: var(--font-sans); }
+
+/* Deep-ink space behind the globe, sprinkled with a few faint stars. */
+.space {
+  background:
+    radial-gradient(1.2px 1.2px at 8% 14%, rgb(255 244 220 / 0.85), transparent),
+    radial-gradient(1px 1px at 22% 72%, rgb(255 244 220 / 0.6), transparent),
+    radial-gradient(1.4px 1.4px at 34% 28%, rgb(255 244 220 / 0.7), transparent),
+    radial-gradient(1px 1px at 47% 90%, rgb(255 244 220 / 0.55), transparent),
+    radial-gradient(1.2px 1.2px at 63% 10%, rgb(255 244 220 / 0.8), transparent),
+    radial-gradient(1px 1px at 78% 64%, rgb(255 244 220 / 0.6), transparent),
+    radial-gradient(1.4px 1.4px at 91% 22%, rgb(255 244 220 / 0.75), transparent),
+    radial-gradient(1px 1px at 88% 86%, rgb(255 244 220 / 0.55), transparent),
+    radial-gradient(1px 1px at 15% 44%, rgb(255 244 220 / 0.5), transparent),
+    radial-gradient(1px 1px at 55% 52%, rgb(255 244 220 / 0.35), transparent),
+    radial-gradient(ellipse at 50% 55%, #1b2335 0%, #0d1119 72%);
+}
+
+.popup-stamp { min-width: 8.5rem; padding: 0.7rem 1.1rem 0.65rem; }
+.popup-title { font: 600 0.95rem/1.2 var(--font-display); color: var(--color-ink-900); }
+.popup-date { margin-top: 0.2rem; font: 400 0.66rem/1 var(--font-type); letter-spacing: 0.1em; color: var(--color-ink-600); }

@@ -25,7 +25,7 @@ The current UI is flat, basic and page-based (explore grid, separate profile pag
 
 ## Tasks
 - [x] T1 Shell: full-screen globe layout, brand overlay, hamburger + drawer with panels (explore, timeline, account, options); routes map to drawer/globe state. Route: delegated (writer, 2+ files).
-- [ ] T2 Nostalgic globe styling: sepia/paper basemap recolor, atmosphere/sky, country fills, stamp-like points + popups. Route: delegated.
+- [x] T2 Nostalgic globe styling: sepia/paper basemap recolor, atmosphere/sky, country fills, stamp-like points + popups. Route: delegated.
 - [ ] T3 Motion: intro + idle rotation, fly-to, pulsing points, drawer/panel transitions, reduced-motion. Route: delegated.
 - [ ] T4 Visual check (headless screenshots desktop + mobile) and README touch-up. Route: delegated.
 
@@ -36,7 +36,8 @@ The current UI is flat, basic and page-based (explore grid, separate profile pag
 
 ## Progress / evidence
 - Mode: TDD on (session config), runner `npm test` (Vitest). Route: single delegated writer for all tasks; trigger = 2+ non-trivial files per task.
-- T1 (`feat(ui): full-screen globe shell with drawer`): RED observed for `groupByEra`/`focusFor` (9 failed) and `postmark` (module missing), then GREEN (32 tests). Typecheck and build pass. Headless Chrome check: `/`, `/u/andrew`, `/login`, `/me` (copy of the DB), mobile 390x844 no horizontal scroll. Findings fixed on the way: maplibre CSS overrides `position: absolute` on its container (wrapped it); SSR renders siblings before an async page finishes, so drawer content is client-only and panel/drawer state is set in a global route middleware.
+- T1 (`feat(ui): full-screen globe shell with drawer`, commit fd42bbd): RED observed for `groupByEra`/`focusFor` (9 failed) and `postmark` (module missing), then GREEN (32 tests). Typecheck and build pass. Headless Chrome check: `/`, `/u/andrew`, `/login`, `/me` (copy of the DB), mobile 390x844 no horizontal scroll. Findings fixed on the way: maplibre CSS overrides `position: absolute` on its container (wrapped it); SSR renders siblings before an async page finishes, so drawer content is client-only and panel/drawer state is set in a global route middleware.
+- T2 (`feat(map): nostalgic atlas globe styling`): RED observed for `restyleLayer`/`restyleLayers` (module missing), GREEN 39 tests. The OpenFreeMap style is fetched and recolored as JSON before map creation (no unstyled flash), globe projection + warm sky set in code, labels switched to Spanish (`name:es`), country labels in letterspaced capitals, stamp-shaped popups (also on tap). Headless check: `/` and `/u/andrew` render with sepia land, teal-grey sea, dashed ink borders, cherry fills and glow points.
 
 ## Next step
-T2.
+T3.
