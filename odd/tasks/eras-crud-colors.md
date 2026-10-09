@@ -22,7 +22,7 @@ Let users fully manage their eras from the UI and choose colors per era and per 
 ## Tasks
 - [x] T1 Data + API: migration for `moments.color`, color/slug/order/year rules, tests. Route: delegated writer.
 - [x] T2 Globe colors: effective color helper, colored points and country fill expression, tests. Route: delegated writer.
-- [ ] T3 Era editor UI in the "Tu vida" drawer. Route: delegated writer.
+- [x] T3 Era editor UI in the "Tu vida" drawer. Route: delegated writer.
 - [ ] T4 Moment edit + color override in the modal and stamp. Route: delegated writer.
 - [ ] T5 README update. Route: delegated writer.
 - [x] T6 Brand label: plain "yafue", top-right aligned with the hamburger, no tagline. Route: inline (mechanical).
@@ -45,3 +45,5 @@ Route evidence: 4+ files to understand and 2+ non-trivial files to write, so map
 - T2: RED observed (5 failing: effectiveColor x2, countryColorExpression x2, feature props color), then GREEN; `npm test` 52 passed.
 - T2 commit: 1a84ade.
 - T6: brand moved top-right, tagline and em removed (done before T3 per request).
+- T6 commit: 0c9d8a4.
+- T3: EraEditor modal (create/edit/delete/reorder, color picker + swatches + live preview) from "Tu vida"; `npm test` 52 passed, `npx nuxi typecheck` clean.

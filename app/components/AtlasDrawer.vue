@@ -12,6 +12,9 @@ const users = computed(() => explore.value?.users ?? [])
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many)
 const initial = (name: string | null, slug: string | null) => (name || slug || '?')[0]?.toUpperCase()
 
+const eraEditor = ref<{ open: boolean, startNew: boolean }>({ open: false, startNew: false })
+const openEras = (startNew = false) => { eraEditor.value = { open: true, startNew } }
+
 const countryTotal = computed(() => Object.keys(state.value.countryCounts).length)
 
 const tabs = computed<{ id: Panel, label: string }[]>(() => [
@@ -128,6 +131,12 @@ async function logout() {
             </header>
 
             <p class="mt-2 truncate text-xs italic text-ink-600">{{ me?.name || me?.email }}</p>
+
+            <div v-if="state.owner === 'me'" class="mt-4 flex gap-2">
+              <button class="btn-ghost border border-ink-700/30" @click="openEras(true)">+ Nueva era</button>
+              <button class="btn-ghost border border-ink-700/30" :disabled="!state.eras.some(e => e.id > 0)" @click="openEras()">Editar eras</button>
+            </div>
+            <EraEditor v-bind="eraEditor" @close="eraEditor.open = false" />
 
             <div class="mt-5">
               <EraTimeline v-if="state.owner === 'me'" :eras="state.eras" editable empty="Sin moments todavía. Clickeá un país en el mapa para empezar." />

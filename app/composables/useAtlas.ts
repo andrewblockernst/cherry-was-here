@@ -77,5 +77,8 @@ export function useAtlas() {
     await refreshNuxtData('me-moments')
   }
 
-  return { state, highlighted, show, enter, setDrawer, toggleDrawer, hover, flyTo, pick, openModal, closeModal, selectOnGlobe, removeMoment }
+  /** Reloads the signed-in user's eras and moments after any change to either. */
+  const refreshTimeline = () => Promise.all([refreshNuxtData('me-eras'), refreshNuxtData('me-moments')])
+
+  return { refreshTimeline, state, highlighted, show, enter, setDrawer, toggleDrawer, hover, flyTo, pick, openModal, closeModal, selectOnGlobe, removeMoment }
 }
