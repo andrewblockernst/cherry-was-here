@@ -181,6 +181,12 @@ button { cursor: pointer; }
 .btn-accent:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--color-accent-900); }
 .btn-accent:disabled { opacity: 0.55; }
 .btn-ghost { border-radius: 2px; padding: 0.5rem 0.9rem; font: 400 0.8rem/1 var(--font-type); color: var(--color-ink-700); }
+.stamp-action {
+  display: grid; place-items: center; width: 28px; height: 28px; border-radius: 2px;
+  color: var(--color-ink-700); background: rgb(255 255 255 / 0.7); border: 1px solid rgb(82 61 44 / 0.25);
+  transition: color .15s, background .15s;
+}
+.stamp-action:hover { background: #fff; }
 .btn-ghost:hover { background: rgb(82 61 44 / 0.1); }
 
 /* Popups on the map share the stamp look. */
@@ -225,7 +231,7 @@ button { cursor: pointer; }
 .drawer-open .era,
 .drawer-open .stamp-item {
   animation: rise 0.7s var(--ease-out-expo) both;
-  animation-delay: calc(180ms + var(--i, 0) * 70ms + var(--k, 0) * 60ms);
+  animation-delay: calc(60ms + var(--i, 0) * 50ms + var(--k, 0) * 60ms);
 }
 
 .panel-enter-active, .panel-leave-active { transition: opacity 0.28s var(--ease-out-quart), transform 0.38s var(--ease-out-quart); }

@@ -173,8 +173,8 @@ async function move(index: number, by: -1 | 1) {
                 </span>
                 <button class="btn-ghost" :disabled="saving || i === 0" :aria-label="`Subir ${era.title}`" @click="move(i, -1)">↑</button>
                 <button class="btn-ghost" :disabled="saving || i === eras.length - 1" :aria-label="`Bajar ${era.title}`" @click="move(i, 1)">↓</button>
-                <button class="btn-ghost" :aria-label="`Editar ${era.title}`" @click="edit(era)">✎</button>
-                <button class="btn-ghost" :disabled="saving" :aria-label="`Eliminar ${era.title}`" @click="remove(era)">🗑</button>
+                <button class="btn-ghost" :aria-label="`Editar ${era.title}`" @click="edit(era)"><AppIcon name="pencil" /></button>
+                <button class="btn-ghost" :disabled="saving" :aria-label="`Eliminar ${era.title}`" @click="remove(era)"><AppIcon name="trash" /></button>
               </li>
             </ul>
             <p v-if="error" role="alert" class="mt-3 text-sm text-accent-700">{{ error }}</p>

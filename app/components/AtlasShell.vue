@@ -110,7 +110,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   from { opacity: 0; transform: scale(0.5) rotate(-90deg); }
   to { opacity: 1; transform: none; }
 }
-.brand { animation: brand-in 1.2s var(--ease-out-expo) 0.5s both; }
+.brand { animation: brand-in 1.2s var(--ease-out-expo) 0.15s both; }
 .brand-title { font: 600 1.45rem/1.1 var(--font-display); font-variation-settings: "SOFT" 100, "opsz" 72; letter-spacing: -0.01em; }
 
 .burger {
@@ -125,7 +125,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   border: 1px solid rgb(82 61 44 / 0.55);
   border-radius: 50%;
   box-shadow: 0 4px 16px rgb(8 10 18 / 0.45), inset 0 0 0 3px var(--color-paper-100), inset 0 0 0 4px rgb(82 61 44 / 0.3);
-  animation: burger-in 0.9s var(--ease-out-expo) 0.3s both;
+  animation: burger-in 0.9s var(--ease-out-expo) 0.1s both;
   transition: scale 0.3s var(--ease-out-expo);
 }
 .burger:hover { scale: 1.07; }

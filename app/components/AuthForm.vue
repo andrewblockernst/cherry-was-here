@@ -3,6 +3,7 @@ const { fetch: refreshSession } = useUserSession()
 const mode = ref<'login' | 'register'>('login')
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const error = ref<string | null>(null)
 const loading = ref(false)
 
@@ -37,7 +38,12 @@ async function submit() {
 
       <label class="block">
         <span class="label">Contraseña</span>
-        <input v-model="password" type="password" required minlength="12" :autocomplete="mode === 'login' ? 'current-password' : 'new-password'" class="field">
+        <span class="relative block">
+          <input v-model="password" :type="showPassword ? 'text' : 'password'" required minlength="12" :autocomplete="mode === 'login' ? 'current-password' : 'new-password'" class="field pr-20">
+          <button type="button" class="absolute inset-y-0 right-2 my-auto h-fit text-xs text-accent-700 underline underline-offset-2" :aria-pressed="showPassword" @click="showPassword = !showPassword">
+            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </span>
         <span v-if="mode === 'register'" class="mt-1 block text-[0.7rem] italic text-ink-500">Mínimo 12 caracteres.</span>
       </label>
 

@@ -4,8 +4,11 @@ import type { CountryCounts, Era, Moment } from '../../shared/types/app'
 definePageMeta({ middleware: 'auth' })
 
 const atlas = useAtlas()
-const { data: momentsData } = await useFetch<{ moments: Moment[], country_counts: CountryCounts }>('/api/moments', { key: 'me-moments' })
-const { data: erasData } = await useFetch<{ eras: Era[] }>('/api/eras', { key: 'me-eras' })
+// Both requests start together; awaiting them jointly keeps SSR waiting for both.
+const [{ data: momentsData }, { data: erasData }] = await Promise.all([
+  useFetch<{ moments: Moment[], country_counts: CountryCounts }>('/api/moments', { key: 'me-moments' }),
+  useFetch<{ eras: Era[] }>('/api/eras', { key: 'me-eras' }),
+])
 
 watchEffect(() => {
   const moments = momentsData.value?.moments ?? []
