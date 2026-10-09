@@ -118,3 +118,47 @@ describe('validation', () => {
     ok(await createEra(db, b, { title: 'E', slug: 'e', start_year: 2001 }))
   })
 })
+
+describe('era and moment colors', () => {
+  it('rejects non-hex colors and accepts null', async () => {
+    expect(await createEra(db, a, { title: 'E', slug: 'e', start_year: 2001, color: 'red' }))
+      .toMatchObject({ ok: false, errors: { color: ['must be a hex color like #be123c'] } })
+    expect(await createMoment(db, a, { title: 'M', date: '2020-01-01', color: '#12345' }))
+      .toMatchObject({ ok: false, errors: { color: ['must be a hex color like #be123c'] } })
+    ok(await createEra(db, a, { title: 'E', slug: 'e', start_year: 2001, color: null }))
+  })
+
+  it('stores and serializes the moment color, updatable to null', async () => {
+    const m = ok(await createMoment(db, a, { title: 'M', date: '2020-01-01', color: '#be123c' }))
+    expect(m.color).toBe('#be123c')
+    const u = ok((await updateMoment(db, a, m.id, { color: null }))!)
+    expect(u.color).toBeNull()
+  })
+})
+
+describe('era slug, order and years', () => {
+  it('derives a unique slug from the title when omitted', async () => {
+    const e1 = ok(await createEra(db, a, { title: 'Época Dorada!', start_year: 2000 }))
+    const e2 = ok(await createEra(db, a, { title: 'Época Dorada!', start_year: 2005 }))
+    const e3 = ok(await createEra(db, a, { title: 'Época Dorada!', start_year: 2008 }))
+    expect([e1.slug, e2.slug, e3.slug]).toEqual(['epoca-dorada', 'epoca-dorada-2', 'epoca-dorada-3'])
+  })
+
+  it('assigns order_index as max + 1 per user when omitted', async () => {
+    const e1 = ok(await createEra(db, a, { title: 'A', start_year: 2000 }))
+    const e2 = ok(await createEra(db, a, { title: 'B', start_year: 2001 }))
+    const other = ok(await createEra(db, b, { title: 'C', start_year: 2001 }))
+    const explicit = ok(await createEra(db, a, { title: 'D', start_year: 2002, order_index: 10 }))
+    const e5 = ok(await createEra(db, a, { title: 'E', start_year: 2003 }))
+    expect([e1.orderIndex, e2.orderIndex, other.orderIndex, explicit.orderIndex, e5.orderIndex]).toEqual([0, 1, 0, 10, 11])
+  })
+
+  it('rejects end_year before start_year on create and update', async () => {
+    expect(await createEra(db, a, { title: 'E', start_year: 2010, end_year: 2000 }))
+      .toMatchObject({ ok: false, errors: { end_year: ['must be greater than or equal to start year'] } })
+    const era = ok(await createEra(db, a, { title: 'E', start_year: 2000, end_year: 2010 }))
+    expect(await updateEra(db, a, era.id, { end_year: 1999 })).toMatchObject({ ok: false })
+    expect(await updateEra(db, a, era.id, { start_year: 2011 })).toMatchObject({ ok: false })
+    expect(ok((await updateEra(db, a, era.id, { start_year: 2005, end_year: 2006 }))!).endYear).toBe(2006)
+  })
+})

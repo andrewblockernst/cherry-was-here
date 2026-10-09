@@ -15,7 +15,7 @@ export const serializeEra = (e: EraRow) => ({
 export const serializeMoment = (m: MomentRow) => ({
   id: m.id, title: m.title, body: m.body, date: m.date, location: m.location,
   country_code: m.countryCode, visibility: m.visibility, latitude: m.latitude,
-  longitude: m.longitude, photo_url: m.photoUrl, era_id: m.eraId,
+  longitude: m.longitude, photo_url: m.photoUrl, era_id: m.eraId, color: m.color,
 })
 
 const blank = "can't be blank"
@@ -23,12 +23,14 @@ const required = z.string({ error: blank }).trim().min(1, blank)
 const optionalText = z.string().nullable().optional()
 const touch = { updatedAt: sql`(strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))` }
 
+const color = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'must be a hex color like #be123c').nullable().optional()
+
 const eraSchema = z.object({
   title: required,
-  slug: required,
+  slug: required.optional(),
   start_year: z.number({ error: blank }).int('must be an integer'),
   end_year: z.number().int('must be an integer').nullable().optional(),
-  color: optionalText,
+  color,
   emoji: optionalText,
   order_index: z.number().int('must be an integer').nullable().optional(),
 })
@@ -45,6 +47,7 @@ const momentSchema = z.object({
   latitude: z.number().min(-90).max(90).nullable().optional(),
   longitude: z.number().min(-180).max(180).nullable().optional(),
   photo_url: optionalText,
+  color,
 })
 
 /** Drops undefined keys so a PATCH only touches the provided fields. */
@@ -63,11 +66,34 @@ function eraValues(v: Partial<z.output<typeof eraSchema>>) {
   return defined({ ...rest, startYear: start_year, endYear: end_year, orderIndex: order_index })
 }
 
+const yearsError = (start?: number | null, end?: number | null) =>
+  start != null && end != null && end < start ? fail('end_year', 'must be greater than or equal to start year') : null
+
+const slugify = (title: string) =>
+  title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40).replace(/-+$/, '') || 'era'
+
+async function uniqueSlug(db: Db, userId: number, title: string) {
+  const taken = new Set((await db.select({ slug: eras.slug }).from(eras).where(eq(eras.userId, userId))).map(r => r.slug))
+  const base = slugify(title)
+  let slug = base
+  for (let n = 2; taken.has(slug); n++) slug = `${base}-${n}`
+  return slug
+}
+
+async function nextOrderIndex(db: Db, userId: number) {
+  const [row] = await db.select({ max: sql<number | null>`max(${eras.orderIndex})` }).from(eras).where(eq(eras.userId, userId))
+  return row?.max == null ? 0 : row.max + 1
+}
+
 export async function createEra(db: Db, userId: number, input: unknown): Promise<Result<EraRow>> {
   const parsed = parse(eraSchema, input)
   if (!parsed.ok) return parsed
+  const bad = yearsError(parsed.value.start_year, parsed.value.end_year)
+  if (bad) return bad
+  const slug = parsed.value.slug ?? await uniqueSlug(db, userId, parsed.value.title)
+  const order_index = parsed.value.order_index ?? await nextOrderIndex(db, userId)
   try {
-    const [era] = await db.insert(eras).values({ ...eraValues(parsed.value), userId } as typeof eras.$inferInsert).returning()
+    const [era] = await db.insert(eras).values({ ...eraValues({ ...parsed.value, slug, order_index }), userId } as typeof eras.$inferInsert).returning()
     return { ok: true, value: era! }
   } catch (e) {
     if (isUniqueViolation(e)) return fail('slug', 'has already been taken')
@@ -79,6 +105,12 @@ export async function createEra(db: Db, userId: number, input: unknown): Promise
 export async function updateEra(db: Db, userId: number, id: number, input: unknown): Promise<Result<EraRow> | null> {
   const parsed = parse(eraSchema.partial(), input)
   if (!parsed.ok) return parsed
+  if (parsed.value.start_year !== undefined || parsed.value.end_year !== undefined) {
+    const [cur] = await db.select().from(eras).where(and(eq(eras.id, id), eq(eras.userId, userId)))
+    if (!cur) return null
+    const bad = yearsError(parsed.value.start_year ?? cur.startYear, parsed.value.end_year === undefined ? cur.endYear : parsed.value.end_year)
+    if (bad) return bad
+  }
   try {
     const [era] = await db.update(eras).set({ ...eraValues(parsed.value), ...touch })
       .where(and(eq(eras.id, id), eq(eras.userId, userId))).returning()

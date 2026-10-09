@@ -52,5 +52,6 @@ export const moments = sqliteTable('moments', {
   latitude: real('latitude'),
   longitude: real('longitude'),
   photoUrl: text('photo_url'),
+  color: text('color'),
   ...timestamps,
 }, t => [index('moments_user_id_index').on(t.userId), index('moments_visibility_index').on(t.visibility)])
