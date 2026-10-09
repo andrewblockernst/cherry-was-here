@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --color-cherry-50: #fff1f2;
+  --color-cherry-100: #ffe4e6;
+  --color-cherry-200: #fecdd3;
+  --color-cherry-300: #fda4af;
+  --color-cherry-400: #fb7185;
+  --color-cherry-500: #f43f5e;
+  --color-cherry-600: #e11d48;
+  --color-cherry-700: #be123c;
+  --color-cherry-800: #9f1239;
+  --color-cherry-900: #881337;
+}
