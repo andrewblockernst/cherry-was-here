@@ -1,4 +1,4 @@
-const KEY = 'cherry:animations'
+const KEY = 'yafue:animations'
 
 /**
  * Motion preference: the in-app toggle (persisted) AND the OS "reduce motion" setting.

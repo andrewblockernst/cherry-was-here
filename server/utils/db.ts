@@ -12,6 +12,6 @@ let shared: Db | undefined
 
 /** Single app-wide client, configured from DATABASE_URL / DATABASE_AUTH_TOKEN. */
 export function useDb(): Db {
-  shared ??= createDb(process.env.DATABASE_URL ?? 'file:./data/cherry.db', process.env.DATABASE_AUTH_TOKEN)
+  shared ??= createDb(process.env.DATABASE_URL ?? 'file:./data/yafue.db', process.env.DATABASE_AUTH_TOKEN)
   return shared
 }

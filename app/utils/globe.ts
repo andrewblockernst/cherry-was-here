@@ -1,4 +1,4 @@
-import type { CountryCounts, Era, EraWithMoments, Moment } from '../../shared/types/cherry'
+import type { CountryCounts, Era, EraWithMoments, Moment } from '../../shared/types/app'
 
 export type LngLat = [number, number]
 

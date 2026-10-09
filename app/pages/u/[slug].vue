@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Profile } from '../../../shared/types/cherry'
+import type { Profile } from '../../../shared/types/app'
 
 const slug = useRoute().params.slug as string
 const atlas = useAtlas()
@@ -12,7 +12,7 @@ watchEffect(() => {
     ? { owner: 'user', user: p.user, countryCounts: p.country_counts, moments: eras.value.flatMap(e => e.moments), eras: eras.value }
     : { owner: 'world', user: null, countryCounts: {}, moments: [], eras: [], missing: slug })
 })
-useHead({ title: () => (profile.value ? `${profile.value.user.name || slug} · Cherry Was Here` : 'Cherry Was Here') })
+useHead({ title: () => (profile.value ? `${profile.value.user.name || slug} · yafue` : 'yafue') })
 </script>
 
 <template>

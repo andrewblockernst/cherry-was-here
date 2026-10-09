@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CountryCounts, Era, Moment } from '../../shared/types/cherry'
+import type { CountryCounts, Era, Moment } from '../../shared/types/app'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -17,7 +17,7 @@ watchEffect(() => {
     eras: groupByEra(erasData.value?.eras ?? [], moments),
   })
 })
-useHead({ title: 'Tu vida · Cherry Was Here' })
+useHead({ title: 'Tu vida · yafue' })
 </script>
 
 <template>

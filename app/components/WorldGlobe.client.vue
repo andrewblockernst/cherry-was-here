@@ -43,13 +43,13 @@ function addCountryLayers(m: MlMap, geojson: FeatureCollection) {
   const before = m.getStyle().layers.find(l => l.type === 'symbol')?.id
   m.addSource('countries', { type: 'geojson', data: geojson })
   m.addLayer({ id: 'countries-hit', type: 'fill', source: 'countries', paint: { 'fill-opacity': 0 } }, before)
-  m.addLayer({ id: 'visited-fill', type: 'fill', source: 'countries', paint: { 'fill-color': PALETTE.cherry, 'fill-opacity': visitedOpacity() } }, before)
-  m.addLayer({ id: 'visited-line', type: 'line', source: 'countries', paint: { 'line-color': PALETTE.cherryDeep, 'line-width': 1, 'line-opacity': lineOpacity() } }, before)
-  m.addLayer({ id: 'highlight-fill', type: 'fill', source: 'countries', filter: highlightFilter(), paint: { 'fill-color': PALETTE.cherryDeep, 'fill-opacity': 0.55 } }, before)
+  m.addLayer({ id: 'visited-fill', type: 'fill', source: 'countries', paint: { 'fill-color': PALETTE.accent, 'fill-opacity': visitedOpacity() } }, before)
+  m.addLayer({ id: 'visited-line', type: 'line', source: 'countries', paint: { 'line-color': PALETTE.accentDeep, 'line-width': 1, 'line-opacity': lineOpacity() } }, before)
+  m.addLayer({ id: 'highlight-fill', type: 'fill', source: 'countries', filter: highlightFilter(), paint: { 'fill-color': PALETTE.accentDeep, 'fill-opacity': 0.55 } }, before)
   m.addLayer({ id: 'highlight-line', type: 'line', source: 'countries', filter: highlightFilter(), paint: { 'line-color': PALETTE.ink, 'line-width': 1.6 } }, before)
 }
 
-/** Rezi-style glow: three stacked cherry circles, softest outside, a paper-rimmed dot inside. */
+/** Rezi-style glow: three stacked accent circles, softest outside, a paper-rimmed dot inside. */
 const pointRadius = (extra: number, scale = 1): ExpressionSpecification =>
   ['interpolate', ['linear'], ['zoom'], 0, (4 + extra) * scale, 5, (4 + extra) * scale, 8, (6 + extra) * scale, 12, (6 + extra) * scale]
 
@@ -59,7 +59,7 @@ function addPointLayers(m: MlMap) {
   const circle = (id: string, extra: number, opacity: number, blur: number, stroke = 0) => m.addLayer({
     id, type: 'circle', source: 'moments',
     paint: {
-      'circle-color': id === 'inner_points' ? PALETTE.cherry : GLOW,
+      'circle-color': id === 'inner_points' ? PALETTE.accent : GLOW,
       'circle-opacity': opacity,
       'circle-radius': radius(extra),
       'circle-blur': blur,

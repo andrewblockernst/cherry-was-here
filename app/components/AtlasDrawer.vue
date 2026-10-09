@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PublicUserSummary, User } from '../../shared/types/cherry'
+import type { PublicUserSummary, User } from '../../shared/types/app'
 import type { Panel } from '../composables/useAtlas'
 
 const { state, setDrawer, enter, openModal } = useAtlas()
@@ -65,10 +65,10 @@ async function logout() {
         <!-- Explore: every public life, or the one being viewed -->
         <section v-if="state.panel === 'explore'" :key="`explore-${state.user?.slug ?? state.missing ?? 'all'}`">
           <template v-if="state.owner === 'user' && state.user">
-            <NuxtLink to="/" class="font-type text-[0.7rem] uppercase tracking-widest text-ink-600 hover:text-cherry-700">← Todas las vidas</NuxtLink>
+            <NuxtLink to="/" class="font-type text-[0.7rem] uppercase tracking-widest text-ink-600 hover:text-accent-700">← Todas las vidas</NuxtLink>
             <header class="mt-3 flex items-center gap-3">
               <img v-if="state.user.avatar_url" :src="state.user.avatar_url" alt="" class="h-14 w-14 rounded-full border-2 border-ink-600 object-cover">
-              <span v-else class="grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-ink-600 bg-paper-50 font-display text-xl font-semibold text-cherry-700">{{ initial(state.user.name, state.user.slug) }}</span>
+              <span v-else class="grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-ink-600 bg-paper-50 font-display text-xl font-semibold text-accent-700">{{ initial(state.user.name, state.user.slug) }}</span>
               <div class="min-w-0">
                 <h3 class="truncate font-display text-2xl font-semibold leading-tight text-ink-900">{{ state.user.name || state.user.slug }}</h3>
                 <p class="font-type text-[0.7rem] tracking-wide text-ink-600">
@@ -92,19 +92,19 @@ async function logout() {
             <p v-if="exploreStatus === 'pending'" class="text-sm italic text-ink-600">Cargando…</p>
             <ul v-else-if="users.length" class="space-y-3">
               <li v-for="(u, i) in users" :key="u.slug" class="stagger" :style="{ '--i': i }">
-                <NuxtLink :to="`/u/${u.slug}`" class="group block border border-ink-700/25 bg-paper-50/80 p-3.5 transition-all duration-300 ease-out-quart hover:-translate-y-0.5 hover:border-cherry-700/50 hover:shadow-lg" @click="onPickUser">
+                <NuxtLink :to="`/u/${u.slug}`" class="group block border border-ink-700/25 bg-paper-50/80 p-3.5 transition-all duration-300 ease-out-quart hover:-translate-y-0.5 hover:border-accent-700/50 hover:shadow-lg" @click="onPickUser">
                   <span class="flex items-center gap-3">
                     <img v-if="u.avatar_url" :src="u.avatar_url" alt="" class="h-11 w-11 rounded-full border border-ink-600 object-cover">
-                    <span v-else class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ink-600 bg-paper-100 font-display text-lg font-semibold text-cherry-700">{{ initial(u.name, u.slug) }}</span>
+                    <span v-else class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ink-600 bg-paper-100 font-display text-lg font-semibold text-accent-700">{{ initial(u.name, u.slug) }}</span>
                     <span class="min-w-0">
-                      <span class="block truncate font-display text-lg font-semibold leading-tight text-ink-900 group-hover:text-cherry-800">{{ u.name || u.slug }}</span>
+                      <span class="block truncate font-display text-lg font-semibold leading-tight text-ink-900 group-hover:text-accent-800">{{ u.name || u.slug }}</span>
                       <span class="block truncate font-type text-[0.7rem] text-ink-500">@{{ u.slug }}</span>
                     </span>
                   </span>
                   <span v-if="u.bio" class="mt-2 line-clamp-2 block text-sm italic text-ink-700">{{ u.bio }}</span>
                   <span class="mt-2 flex gap-4 font-type text-[0.68rem] uppercase tracking-widest text-ink-600">
-                    <span><b class="text-cherry-700">{{ u.country_count }}</b> {{ plural(u.country_count, 'país', 'países') }}</span>
-                    <span><b class="text-cherry-700">{{ u.moment_count }}</b> {{ plural(u.moment_count, 'moment', 'moments') }}</span>
+                    <span><b class="text-accent-700">{{ u.country_count }}</b> {{ plural(u.country_count, 'país', 'países') }}</span>
+                    <span><b class="text-accent-700">{{ u.moment_count }}</b> {{ plural(u.moment_count, 'moment', 'moments') }}</span>
                   </span>
                 </NuxtLink>
               </li>
@@ -124,7 +124,7 @@ async function logout() {
                   {{ countryTotal }} {{ plural(countryTotal, 'país', 'países') }} · {{ state.moments.length }} {{ plural(state.moments.length, 'moment', 'moments') }}
                 </p>
               </div>
-              <button class="btn-cherry shrink-0" @click="state.owner === 'me' ? openModal() : navigateTo('/me')">+ Nuevo moment</button>
+              <button class="btn-accent shrink-0" @click="state.owner === 'me' ? openModal() : navigateTo('/me')">+ Nuevo moment</button>
             </header>
 
             <p class="mt-2 truncate text-xs italic text-ink-600">{{ me?.name || me?.email }}</p>
@@ -147,13 +147,13 @@ async function logout() {
             <div>
               <h4 id="opt-animations" class="font-display text-lg font-semibold text-ink-900">Animaciones</h4>
               <p class="mt-0.5 text-sm italic text-ink-600">Giro suave del globo, puntos que laten y transiciones.</p>
-              <p v-if="reduced" class="mt-1.5 text-xs text-cherry-700">Tu sistema pide reducir el movimiento, así que están desactivadas.</p>
+              <p v-if="reduced" class="mt-1.5 text-xs text-accent-700">Tu sistema pide reducir el movimiento, así que están desactivadas.</p>
             </div>
             <button class="switch mt-1" role="switch" aria-labelledby="opt-animations" :aria-checked="motionOn" :disabled="reduced" @click="setAnimations(!animations)"><span /></button>
           </div>
           <div class="mt-8 border-t border-ink-700/25 pt-5 text-sm leading-relaxed text-ink-700">
             <h4 class="label mb-2">Acerca de</h4>
-            <p class="italic">Cherry Was Here es un atlas personal: cada uno marca los países donde estuvo y los moments que lo marcaron.</p>
+            <p class="italic">yafue es un atlas personal: cada uno marca los países donde estuvo y los moments que lo marcaron.</p>
             <p class="mt-3 text-xs text-ink-500">Mapa: OpenFreeMap · © OpenMapTiles · datos © colaboradores de OpenStreetMap.</p>
           </div>
         </section>

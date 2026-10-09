@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { EraWithMoments } from '../../shared/types/cherry'
+import type { EraWithMoments } from '../../shared/types/app'
 
 defineProps<{ eras: EraWithMoments[], editable?: boolean, empty: string }>()
 const atlas = useAtlas()
@@ -13,7 +13,7 @@ const { names } = useCountries()
     <li v-for="(era, i) in eras" :key="era.id" class="era relative" :style="{ '--i': i }">
       <span
         class="absolute -left-[2.15rem] top-0 grid h-7 w-7 place-items-center rounded-full border-2 border-ink-600 bg-paper-50 text-sm"
-        :style="{ boxShadow: `0 0 0 3px ${era.color || 'var(--color-cherry-700)'}33` }"
+        :style="{ boxShadow: `0 0 0 3px ${era.color || 'var(--color-accent-700)'}33` }"
       >{{ era.emoji || '•' }}</span>
       <h3 class="font-display text-lg font-semibold leading-tight text-ink-900">{{ era.title }}</h3>
       <p class="font-type text-[0.7rem] uppercase tracking-widest text-ink-500">

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'es' },
-      title: 'Cherry Was Here',
+      title: 'yafue',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#0d1119' },

@@ -41,20 +41,20 @@ async function submit() {
         <span v-if="mode === 'register'" class="mt-1 block text-[0.7rem] italic text-ink-500">Mínimo 12 caracteres.</span>
       </label>
 
-      <p v-if="error" role="alert" class="text-sm text-cherry-700">{{ error }}</p>
+      <p v-if="error" role="alert" class="text-sm text-accent-700">{{ error }}</p>
 
-      <button type="submit" :disabled="loading" class="btn-cherry w-full">
+      <button type="submit" :disabled="loading" class="btn-accent w-full">
         {{ loading ? '…' : mode === 'login' ? 'Entrar' : 'Crear cuenta' }}
       </button>
 
       <p class="pt-1 text-center text-xs text-ink-600">
         <template v-if="mode === 'login'">
           ¿No tenés cuenta?
-          <button type="button" class="text-cherry-700 underline underline-offset-2" @click="mode = 'register'">Crear una</button>
+          <button type="button" class="text-accent-700 underline underline-offset-2" @click="mode = 'register'">Crear una</button>
         </template>
         <template v-else>
           ¿Ya tenés cuenta?
-          <button type="button" class="text-cherry-700 underline underline-offset-2" @click="mode = 'login'">Entrar</button>
+          <button type="button" class="text-accent-700 underline underline-offset-2" @click="mode = 'login'">Entrar</button>
         </template>
       </p>
     </form>

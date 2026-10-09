@@ -4,7 +4,7 @@ if (loggedIn.value) await navigateTo('/me')
 
 const atlas = useAtlas()
 atlas.show({ owner: 'world', user: null, countryCounts: {}, moments: [], eras: [] })
-useHead({ title: 'Entrar · Cherry Was Here' })
+useHead({ title: 'Entrar · yafue' })
 </script>
 
 <template>
