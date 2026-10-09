@@ -27,7 +27,7 @@ Two runtimes (Elixir + Vite) are overkill for a small multi-user "where I've bee
 
 ## Tasks
 - [x] T1 Scaffold Nuxt 4 + Tailwind v4 + Vitest at root; fix `.gitignore`. Route: delegated (writer, 2+ files).
-- [ ] T2 DB layer: Drizzle schema, migrations, countries seed, import script from the Phoenix DB. Route: delegated.
+- [x] T2 DB layer: Drizzle schema, migrations, countries seed, import script from the Phoenix DB. Route: delegated.
 - [ ] T3 Server API + auth with tests. Route: delegated.
 - [ ] T4 Vue pages + components (explore, login, me, profile, timeline, add-moment modal). Route: delegated.
 - [ ] T5 MapLibre globe component (Rezi look). Route: delegated.
@@ -40,7 +40,8 @@ Two runtimes (Elixir + Vite) are overkill for a small multi-user "where I've bee
 
 ## Progress / evidence
 (commit SHAs and check results per task)
-- T1 (SHA_T1): `npm run build`: ok; `npx nuxi typecheck`: ok (no errors); `npm test`: no tests yet (Vitest 5 runs, exits 1 on empty suite; tests land in T2/T3). Stack: nuxt 4.6, tailwind 4.3 via @tailwindcss/vite, nuxt-auth-utils 0.5, typescript 5.9 (7.x not used: Nuxt/vue-tsc toolchain targets 5.x). `data/.gitkeep` keeps the DB dir.
+- T1 (316fe1e): `npm run build`: ok; `npx nuxi typecheck`: ok (no errors); `npm test`: no tests yet (Vitest 5 runs, exits 1 on empty suite; tests land in T2/T3). Stack: nuxt 4.6, tailwind 4.3 via @tailwindcss/vite, nuxt-auth-utils 0.5, typescript 5.9 (7.x not used: Nuxt/vue-tsc toolchain targets 5.x). `data/.gitkeep` keeps the DB dir.
+- T2 (SHA_T2): TDD RED observed (tests/db.test.ts failed: `../server/db/seed` / `scripts/import-phoenix` modules missing), then GREEN: `npm test`: 3 passed (seed idempotent, import preserves ids/hash, import refuses non-empty target). `npx nuxi typecheck`: ok. Local `data/cherry.db` (gitignored) via `db:migrate` + `db:import` + `db:seed`: users 2, eras 5, moments 11, countries 64. Timestamps are ISO text (`inserted_at`/`updated_at`) like Phoenix; `moments.date` is text YYYY-MM-DD.
 
 ## Next step
-T2.
+T3.

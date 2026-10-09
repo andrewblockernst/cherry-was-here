@@ -1,0 +1,450 @@
+[
+  {
+    "iso2": "ES",
+    "iso3": "ESP",
+    "name": "Spain",
+    "name_es": "España",
+    "region": "Europe"
+  },
+  {
+    "iso2": "FR",
+    "iso3": "FRA",
+    "name": "France",
+    "name_es": "Francia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "IT",
+    "iso3": "ITA",
+    "name": "Italy",
+    "name_es": "Italia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "DE",
+    "iso3": "DEU",
+    "name": "Germany",
+    "name_es": "Alemania",
+    "region": "Europe"
+  },
+  {
+    "iso2": "GB",
+    "iso3": "GBR",
+    "name": "United Kingdom",
+    "name_es": "Reino Unido",
+    "region": "Europe"
+  },
+  {
+    "iso2": "PT",
+    "iso3": "PRT",
+    "name": "Portugal",
+    "name_es": "Portugal",
+    "region": "Europe"
+  },
+  {
+    "iso2": "NL",
+    "iso3": "NLD",
+    "name": "Netherlands",
+    "name_es": "Países Bajos",
+    "region": "Europe"
+  },
+  {
+    "iso2": "BE",
+    "iso3": "BEL",
+    "name": "Belgium",
+    "name_es": "Bélgica",
+    "region": "Europe"
+  },
+  {
+    "iso2": "CH",
+    "iso3": "CHE",
+    "name": "Switzerland",
+    "name_es": "Suiza",
+    "region": "Europe"
+  },
+  {
+    "iso2": "AT",
+    "iso3": "AUT",
+    "name": "Austria",
+    "name_es": "Austria",
+    "region": "Europe"
+  },
+  {
+    "iso2": "SE",
+    "iso3": "SWE",
+    "name": "Sweden",
+    "name_es": "Suecia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "NO",
+    "iso3": "NOR",
+    "name": "Norway",
+    "name_es": "Noruega",
+    "region": "Europe"
+  },
+  {
+    "iso2": "DK",
+    "iso3": "DNK",
+    "name": "Denmark",
+    "name_es": "Dinamarca",
+    "region": "Europe"
+  },
+  {
+    "iso2": "FI",
+    "iso3": "FIN",
+    "name": "Finland",
+    "name_es": "Finlandia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "GR",
+    "iso3": "GRC",
+    "name": "Greece",
+    "name_es": "Grecia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "PL",
+    "iso3": "POL",
+    "name": "Poland",
+    "name_es": "Polonia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "CZ",
+    "iso3": "CZE",
+    "name": "Czech Republic",
+    "name_es": "República Checa",
+    "region": "Europe"
+  },
+  {
+    "iso2": "HU",
+    "iso3": "HUN",
+    "name": "Hungary",
+    "name_es": "Hungría",
+    "region": "Europe"
+  },
+  {
+    "iso2": "IE",
+    "iso3": "IRL",
+    "name": "Ireland",
+    "name_es": "Irlanda",
+    "region": "Europe"
+  },
+  {
+    "iso2": "HR",
+    "iso3": "HRV",
+    "name": "Croatia",
+    "name_es": "Croacia",
+    "region": "Europe"
+  },
+  {
+    "iso2": "AR",
+    "iso3": "ARG",
+    "name": "Argentina",
+    "name_es": "Argentina",
+    "region": "South America"
+  },
+  {
+    "iso2": "BR",
+    "iso3": "BRA",
+    "name": "Brazil",
+    "name_es": "Brasil",
+    "region": "South America"
+  },
+  {
+    "iso2": "CL",
+    "iso3": "CHL",
+    "name": "Chile",
+    "name_es": "Chile",
+    "region": "South America"
+  },
+  {
+    "iso2": "PE",
+    "iso3": "PER",
+    "name": "Peru",
+    "name_es": "Perú",
+    "region": "South America"
+  },
+  {
+    "iso2": "CO",
+    "iso3": "COL",
+    "name": "Colombia",
+    "name_es": "Colombia",
+    "region": "South America"
+  },
+  {
+    "iso2": "VE",
+    "iso3": "VEN",
+    "name": "Venezuela",
+    "name_es": "Venezuela",
+    "region": "South America"
+  },
+  {
+    "iso2": "EC",
+    "iso3": "ECU",
+    "name": "Ecuador",
+    "name_es": "Ecuador",
+    "region": "South America"
+  },
+  {
+    "iso2": "BO",
+    "iso3": "BOL",
+    "name": "Bolivia",
+    "name_es": "Bolivia",
+    "region": "South America"
+  },
+  {
+    "iso2": "PY",
+    "iso3": "PRY",
+    "name": "Paraguay",
+    "name_es": "Paraguay",
+    "region": "South America"
+  },
+  {
+    "iso2": "UY",
+    "iso3": "URY",
+    "name": "Uruguay",
+    "name_es": "Uruguay",
+    "region": "South America"
+  },
+  {
+    "iso2": "GY",
+    "iso3": "GUY",
+    "name": "Guyana",
+    "name_es": "Guyana",
+    "region": "South America"
+  },
+  {
+    "iso2": "SR",
+    "iso3": "SUR",
+    "name": "Suriname",
+    "name_es": "Surinam",
+    "region": "South America"
+  },
+  {
+    "iso2": "US",
+    "iso3": "USA",
+    "name": "United States",
+    "name_es": "Estados Unidos",
+    "region": "North America"
+  },
+  {
+    "iso2": "CA",
+    "iso3": "CAN",
+    "name": "Canada",
+    "name_es": "Canadá",
+    "region": "North America"
+  },
+  {
+    "iso2": "MX",
+    "iso3": "MEX",
+    "name": "Mexico",
+    "name_es": "México",
+    "region": "North America"
+  },
+  {
+    "iso2": "GT",
+    "iso3": "GTM",
+    "name": "Guatemala",
+    "name_es": "Guatemala",
+    "region": "North America"
+  },
+  {
+    "iso2": "CR",
+    "iso3": "CRI",
+    "name": "Costa Rica",
+    "name_es": "Costa Rica",
+    "region": "North America"
+  },
+  {
+    "iso2": "PA",
+    "iso3": "PAN",
+    "name": "Panama",
+    "name_es": "Panamá",
+    "region": "North America"
+  },
+  {
+    "iso2": "CU",
+    "iso3": "CUB",
+    "name": "Cuba",
+    "name_es": "Cuba",
+    "region": "North America"
+  },
+  {
+    "iso2": "CN",
+    "iso3": "CHN",
+    "name": "China",
+    "name_es": "China",
+    "region": "Asia"
+  },
+  {
+    "iso2": "JP",
+    "iso3": "JPN",
+    "name": "Japan",
+    "name_es": "Japón",
+    "region": "Asia"
+  },
+  {
+    "iso2": "KR",
+    "iso3": "KOR",
+    "name": "South Korea",
+    "name_es": "Corea del Sur",
+    "region": "Asia"
+  },
+  {
+    "iso2": "IN",
+    "iso3": "IND",
+    "name": "India",
+    "name_es": "India",
+    "region": "Asia"
+  },
+  {
+    "iso2": "TH",
+    "iso3": "THA",
+    "name": "Thailand",
+    "name_es": "Tailandia",
+    "region": "Asia"
+  },
+  {
+    "iso2": "VN",
+    "iso3": "VNM",
+    "name": "Vietnam",
+    "name_es": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "iso2": "SG",
+    "iso3": "SGP",
+    "name": "Singapore",
+    "name_es": "Singapur",
+    "region": "Asia"
+  },
+  {
+    "iso2": "MY",
+    "iso3": "MYS",
+    "name": "Malaysia",
+    "name_es": "Malasia",
+    "region": "Asia"
+  },
+  {
+    "iso2": "ID",
+    "iso3": "IDN",
+    "name": "Indonesia",
+    "name_es": "Indonesia",
+    "region": "Asia"
+  },
+  {
+    "iso2": "PH",
+    "iso3": "PHL",
+    "name": "Philippines",
+    "name_es": "Filipinas",
+    "region": "Asia"
+  },
+  {
+    "iso2": "TR",
+    "iso3": "TUR",
+    "name": "Turkey",
+    "name_es": "Turquía",
+    "region": "Asia"
+  },
+  {
+    "iso2": "IL",
+    "iso3": "ISR",
+    "name": "Israel",
+    "name_es": "Israel",
+    "region": "Asia"
+  },
+  {
+    "iso2": "AE",
+    "iso3": "ARE",
+    "name": "United Arab Emirates",
+    "name_es": "Emiratos Árabes Unidos",
+    "region": "Asia"
+  },
+  {
+    "iso2": "RU",
+    "iso3": "RUS",
+    "name": "Russia",
+    "name_es": "Rusia",
+    "region": "Asia"
+  },
+  {
+    "iso2": "ZA",
+    "iso3": "ZAF",
+    "name": "South Africa",
+    "name_es": "Sudáfrica",
+    "region": "Africa"
+  },
+  {
+    "iso2": "EG",
+    "iso3": "EGY",
+    "name": "Egypt",
+    "name_es": "Egipto",
+    "region": "Africa"
+  },
+  {
+    "iso2": "MA",
+    "iso3": "MAR",
+    "name": "Morocco",
+    "name_es": "Marruecos",
+    "region": "Africa"
+  },
+  {
+    "iso2": "KE",
+    "iso3": "KEN",
+    "name": "Kenya",
+    "name_es": "Kenia",
+    "region": "Africa"
+  },
+  {
+    "iso2": "NG",
+    "iso3": "NGA",
+    "name": "Nigeria",
+    "name_es": "Nigeria",
+    "region": "Africa"
+  },
+  {
+    "iso2": "GH",
+    "iso3": "GHA",
+    "name": "Ghana",
+    "name_es": "Ghana",
+    "region": "Africa"
+  },
+  {
+    "iso2": "TZ",
+    "iso3": "TZA",
+    "name": "Tanzania",
+    "name_es": "Tanzania",
+    "region": "Africa"
+  },
+  {
+    "iso2": "ET",
+    "iso3": "ETH",
+    "name": "Ethiopia",
+    "name_es": "Etiopía",
+    "region": "Africa"
+  },
+  {
+    "iso2": "AU",
+    "iso3": "AUS",
+    "name": "Australia",
+    "name_es": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "iso2": "NZ",
+    "iso3": "NZL",
+    "name": "New Zealand",
+    "name_es": "Nueva Zelanda",
+    "region": "Oceania"
+  },
+  {
+    "iso2": "FJ",
+    "iso3": "FJI",
+    "name": "Fiji",
+    "name_es": "Fiyi",
+    "region": "Oceania"
+  }
+]
