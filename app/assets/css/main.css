@@ -231,7 +231,7 @@ button { cursor: pointer; }
 .drawer-open .era,
 .drawer-open .stamp-item {
   animation: rise 0.7s var(--ease-out-expo) both;
-  animation-delay: calc(180ms + var(--i, 0) * 70ms + var(--k, 0) * 60ms);
+  animation-delay: calc(60ms + var(--i, 0) * 50ms + var(--k, 0) * 60ms);
 }
 
 .panel-enter-active, .panel-leave-active { transition: opacity 0.28s var(--ease-out-quart), transform 0.38s var(--ease-out-quart); }

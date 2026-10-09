@@ -5,7 +5,7 @@ import type { Panel } from '../composables/useAtlas'
 const { state, setDrawer, enter, openModal } = useAtlas()
 const { animations, reduced, enabled: motionOn, setAnimations } = useMotion()
 const { loggedIn, clear } = useUserSession()
-const { data: me } = useFetch<User>('/api/me', { key: 'me', immediate: loggedIn.value, watch: [loggedIn] })
+const { data: me, status: meStatus } = useFetch<User>('/api/me', { key: 'me', immediate: loggedIn.value, watch: [loggedIn] })
 
 const { data: explore, status: exploreStatus } = useFetch<{ users: PublicUserSummary[] }>('/api/explore', { key: 'explore' })
 const users = computed(() => explore.value?.users ?? [])
@@ -130,7 +130,8 @@ async function logout() {
               <button class="btn-accent shrink-0" @click="state.owner === 'me' ? openModal() : navigateTo('/me')">+ Nuevo moment</button>
             </header>
 
-            <p class="mt-2 truncate text-xs italic text-ink-600">{{ me?.name || me?.email }}</p>
+            <p v-if="meStatus === 'pending' && !me" class="mt-2 h-4 w-40 animate-pulse rounded-sm bg-ink-700/15" aria-hidden="true" />
+            <p v-else class="mt-2 truncate text-xs italic text-ink-600">{{ me?.name || me?.email }}</p>
 
             <div v-if="state.owner === 'me'" class="mt-4 flex gap-2">
               <button class="btn-ghost border border-ink-700/30" @click="openEras(true)">+ Nueva era</button>
@@ -140,6 +141,9 @@ async function logout() {
 
             <div class="mt-5">
               <EraTimeline v-if="state.owner === 'me'" :eras="state.eras" editable empty="Sin moments todavía. Clickeá un país en el mapa para empezar." />
+              <div v-else class="space-y-3" role="status" aria-label="Cargando tu vida">
+                <div v-for="n in 3" :key="n" class="h-16 animate-pulse border border-ink-700/20 bg-ink-700/10" aria-hidden="true" />
+              </div>
             </div>
 
             <footer class="mt-8 flex flex-wrap items-center gap-2 border-t border-ink-700/25 pt-4">

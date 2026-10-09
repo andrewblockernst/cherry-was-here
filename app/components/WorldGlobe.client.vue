@@ -173,10 +173,14 @@ function syncLoop() {
 
 onMounted(async () => {
   maplibregl.setWorkerUrl(workerUrl)
-  const geojson = await $fetch<FeatureCollection>('/geo/countries.geojson')
+  // Independent requests: run them together instead of one after the other.
+  const [geojson, baseStyle] = await Promise.all([
+    $fetch<FeatureCollection>('/geo/countries.geojson'),
+    $fetch<StyleSpecification>(STYLE_URL),
+  ])
   labels = Object.fromEntries(geojson.features.map(f => [f.properties!.iso2, f.properties!.label as LngLat]))
 
-  const style = atlasStyle(await $fetch<StyleSpecification>(STYLE_URL))
+  const style = atlasStyle(baseStyle)
   // Intro: start far out and turned away, then ease into the framed view once the style is ready.
   const target = viewCamera()
   const intro = motion.value
@@ -198,7 +202,7 @@ onMounted(async () => {
     el.value?.querySelector('.maplibregl-ctrl-attrib')?.removeAttribute('open')
     map!.jumpTo({ padding: target.padding })
     ready.value = true
-    moveTo(viewCamera(), 3800)
+    moveTo(viewCamera(), 1500)
     markInteraction()
     map!.on('movestart', (e) => { if ((e as { originalEvent?: unknown }).originalEvent) markInteraction() })
     map!.on('wheel', markInteraction)

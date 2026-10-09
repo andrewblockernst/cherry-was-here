@@ -8,6 +8,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css', 'maplibre-gl/dist/maplibre-gl.css'],
   vite: { plugins: [tailwindcss()] },
   devtools: { enabled: false },
+  // Static data only; user-specific APIs stay uncached.
+  routeRules: {
+    '/geo/**': { headers: { 'cache-control': 'public, max-age=86400, stale-while-revalidate=604800' } },
+    '/api/countries': { headers: { 'cache-control': 'public, max-age=86400, stale-while-revalidate=604800' } },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'es' },

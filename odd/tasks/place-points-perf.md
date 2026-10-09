@@ -18,7 +18,7 @@ Let a moment be pinned to a province/state/county/city as a colored point (count
 
 ## Tasks
 - [x] T1 Place search: debounced Photon lookup in AddMomentModal, filtered to the selected country when set; choosing a result fills location + lat/lng; clear option; payload sends latitude/longitude; server validation accepts them. Pure helper (Photon feature -> {label, lat, lng, countryCode}) unit-tested.
-- [ ] T2 Faster load: fetch geojson and style in parallel; shorten intro camera ease and UI delays; routeRules cache headers for `/geo/**` and `/api/countries`; loading skeleton/state in the drawer for `me`; parallel fetches in `me.vue`.
+- [x] T2 Faster load: fetch geojson and style in parallel; shorten intro camera ease and UI delays; routeRules cache headers for `/geo/**` and `/api/countries`; loading skeleton/state in the drawer for `me`; parallel fetches in `me.vue`.
 
 ## Acceptance
 - A moment with a chosen place shows its colored point at that place; country fill unchanged.
