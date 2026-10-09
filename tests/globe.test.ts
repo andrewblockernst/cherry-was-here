@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { countryFillExpression, focusFor, groupByEra, momentFeatures, rotateLng } from '../app/utils/globe'
+import { countryColorExpression, countryFillExpression, effectiveColor, focusFor, groupByEra, momentFeatures, rotateLng } from '../app/utils/globe'
 import type { Era, Moment } from '../shared/types/app'
 
 const moment = (over: Partial<Moment>): Moment => ({
   id: 1, title: 'Trip', body: null, date: '2020-01-02', location: null, country_code: null,
-  visibility: 'public', latitude: null, longitude: null, photo_url: null, era_id: null, ...over,
+  visibility: 'public', latitude: null, longitude: null, photo_url: null, era_id: null, color: null, ...over,
 })
 
 describe('momentFeatures', () => {
@@ -26,7 +26,43 @@ describe('momentFeatures', () => {
 
   it('carries id, title, date and country_code as properties', () => {
     const f = momentFeatures([moment({ id: 7, country_code: 'AR' })], labels).features[0]!
-    expect(f.properties).toEqual({ id: 7, title: 'Trip', date: '2020-01-02', country_code: 'AR' })
+    expect(f.properties).toEqual({ id: 7, title: 'Trip', date: '2020-01-02', country_code: 'AR', color: '#BE123C' })
+  })
+})
+
+describe('effectiveColor', () => {
+  const eras = [{ id: 1, color: '#112233' }, { id: 2, color: null }]
+
+  it('prefers the moment color, then the era color, then the accent', () => {
+    expect(effectiveColor(moment({ color: '#aabbcc', era_id: 1 }), eras)).toBe('#aabbcc')
+    expect(effectiveColor(moment({ era_id: 1 }), eras)).toBe('#112233')
+    expect(effectiveColor(moment({ era_id: 2 }), eras)).toBe('#BE123C')
+    expect(effectiveColor(moment({ era_id: 99 }), eras)).toBe('#BE123C')
+    expect(effectiveColor(moment({}), eras)).toBe('#BE123C')
+  })
+
+  it('colors point features per moment', () => {
+    const labels = { AR: [-64.5, -34.5] as [number, number] }
+    const fc = momentFeatures([moment({ country_code: 'AR', era_id: 1 })], labels, eras)
+    expect(fc.features[0]!.properties.color).toBe('#112233')
+  })
+})
+
+describe('countryColorExpression', () => {
+  const eras = [{ id: 1, color: '#112233' }]
+
+  it('stays accent without moments', () => {
+    expect(countryColorExpression([], eras)).toBe('#BE123C')
+    expect(countryColorExpression([moment({})], eras)).toBe('#BE123C')
+  })
+
+  it('uses the color of the most recent moment per country', () => {
+    const expr = countryColorExpression([
+      moment({ id: 1, country_code: 'AR', date: '2019-01-01', era_id: 1 }),
+      moment({ id: 2, country_code: 'AR', date: '2021-01-01', color: '#aabbcc' }),
+      moment({ id: 3, country_code: 'ES', date: '2020-01-01', era_id: 1 }),
+    ], eras)
+    expect(expr).toEqual(['match', ['get', 'iso2'], 'AR', '#aabbcc', 'ES', '#112233', '#BE123C'])
   })
 })
 

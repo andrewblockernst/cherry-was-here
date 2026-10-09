@@ -21,7 +21,7 @@ Let users fully manage their eras from the UI and choose colors per era and per 
 
 ## Tasks
 - [x] T1 Data + API: migration for `moments.color`, color/slug/order/year rules, tests. Route: delegated writer.
-- [ ] T2 Globe colors: effective color helper, colored points and country fill expression, tests. Route: delegated writer.
+- [x] T2 Globe colors: effective color helper, colored points and country fill expression, tests. Route: delegated writer.
 - [ ] T3 Era editor UI in the "Tu vida" drawer. Route: delegated writer.
 - [ ] T4 Moment edit + color override in the modal and stamp. Route: delegated writer.
 - [ ] T5 README update. Route: delegated writer.
@@ -40,3 +40,5 @@ Route evidence: 4+ files to understand and 2+ non-trivial files to write, so map
 
 ## Progress
 - T1: RED observed (5 failing: color validation x2, slug derive, order_index, end_year rule), then GREEN; `npm test` 48 passed. Migration 0001_living_white_tiger.sql. Commit: see git log (feat(eras): api rules).
+- T1 commit: 8891a2e.
+- T2: RED observed (5 failing: effectiveColor x2, countryColorExpression x2, feature props color), then GREEN; `npm test` 52 passed.
