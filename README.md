@@ -57,7 +57,7 @@ Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 
 Hay un único globo a pantalla completa que persiste entre rutas; todo lo demás son capas encima:
 
-- **Marca** "yafue" arriba al centro y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
+- **Marca** "yafue" arriba a la derecha y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
 - **Menú lateral** con tres pestañas: *Explorar* (vidas públicas), *Tu vida* (tu timeline, crear y borrar moments, o entrar / crear cuenta) y *Opciones* (animaciones y créditos).
 - Los moments se muestran como **estampillas** con matasellos en las listas y en los popups del globo. Pasar el mouse por uno resalta su país; hacer click vuela hasta él.
 - En tu mapa (`/me`), hacer click en un país abre el formulario de nuevo moment con ese país.

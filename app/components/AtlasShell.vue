@@ -32,8 +32,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 <template>
   <div>
     <NuxtLink to="/" class="brand" aria-label="yafue, inicio">
-      <span class="brand-title">ya<em>fue</em></span>
-      <span class="brand-tag">un atlas de momentos</span>
+      <span class="brand-title">yafue</span>
     </NuxtLink>
 
     <button
@@ -86,13 +85,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 .brand {
   position: fixed;
   top: max(1rem, env(safe-area-inset-top));
-  left: 50%;
+  right: 1rem;
   z-index: 30;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  transform: translateX(-50%);
-  padding: 0.45rem 1.4rem 0.5rem;
+  height: 3rem;
+  padding: 0 1.2rem;
   background: var(--color-paper-100);
   background-image: var(--paper-grain-soft);
   border: 1px solid rgb(82 61 44 / 0.55);
@@ -104,8 +102,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   white-space: nowrap;
 }
 @keyframes brand-in {
-  from { opacity: 0; transform: translate(-50%, -22px) rotate(-2.5deg); }
-  to { opacity: 1; transform: translate(-50%, 0) rotate(0); }
+  from { opacity: 0; transform: translateY(-22px) rotate(-2.5deg); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes burger-in {
   from { opacity: 0; transform: scale(0.5) rotate(-90deg); }
@@ -113,8 +111,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 }
 .brand { animation: brand-in 1.2s var(--ease-out-expo) 0.5s both; }
 .brand-title { font: 600 1.45rem/1.1 var(--font-display); font-variation-settings: "SOFT" 100, "opsz" 72; letter-spacing: -0.01em; }
-.brand-title em { color: var(--color-accent-700); font-weight: 500; }
-.brand-tag { font: 400 0.6rem/1.2 var(--font-type); letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-ink-600); }
 
 .burger {
   position: fixed;

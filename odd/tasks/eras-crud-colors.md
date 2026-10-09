@@ -25,6 +25,7 @@ Let users fully manage their eras from the UI and choose colors per era and per 
 - [ ] T3 Era editor UI in the "Tu vida" drawer. Route: delegated writer.
 - [ ] T4 Moment edit + color override in the modal and stamp. Route: delegated writer.
 - [ ] T5 README update. Route: delegated writer.
+- [x] T6 Brand label: plain "yafue", top-right aligned with the hamburger, no tagline. Route: inline (mechanical).
 
 Route evidence: 4+ files to understand and 2+ non-trivial files to write, so mapping and writing are delegated.
 
@@ -42,3 +43,5 @@ Route evidence: 4+ files to understand and 2+ non-trivial files to write, so map
 - T1: RED observed (5 failing: color validation x2, slug derive, order_index, end_year rule), then GREEN; `npm test` 48 passed. Migration 0001_living_white_tiger.sql. Commit: see git log (feat(eras): api rules).
 - T1 commit: 8891a2e.
 - T2: RED observed (5 failing: effectiveColor x2, countryColorExpression x2, feature props color), then GREEN; `npm test` 52 passed.
+- T2 commit: 1a84ade.
+- T6: brand moved top-right, tagline and em removed (done before T3 per request).
