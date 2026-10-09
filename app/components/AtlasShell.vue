@@ -75,6 +75,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
       :countries="countries"
       :default-country-code="state.modal.code"
       :default-country-name="state.modal.name"
+      :moment="state.modal.moment"
       @close="closeModal"
       @save="onSaved"
     />

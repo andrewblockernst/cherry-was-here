@@ -31,6 +31,7 @@ const { names } = useCountries()
           :editable="editable"
           @hover="atlas.hover($event?.country_code ?? null)"
           @pick="atlas.pick"
+          @edit="atlas.editMoment"
           @delete="atlas.removeMoment"
         />
       </ul>

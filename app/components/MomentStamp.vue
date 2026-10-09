@@ -8,17 +8,19 @@ const props = defineProps<{
   active?: boolean
   editable?: boolean
 }>()
-const emit = defineEmits<{ hover: [moment: Moment | null], pick: [moment: Moment], delete: [id: number] }>()
+const emit = defineEmits<{ hover: [moment: Moment | null], pick: [moment: Moment], edit: [moment: Moment], delete: [id: number] }>()
 
+/** The moment's own color, else the one inherited from its era. */
+const accent = computed(() => props.moment.color || props.color || 'var(--color-accent-700)')
 const mark = computed(() => postmark(props.moment.date))
 </script>
 
 <template>
   <li class="stamp-item stamp-shadow relative">
     <button
-      class="stamp block w-full py-3.5 pl-4 pr-14 text-left transition-transform duration-300 ease-out-quart hover:-translate-y-0.5"
+      class="stamp block w-full py-3.5 pl-4 pr-16 text-left transition-transform duration-300 ease-out-quart hover:-translate-y-0.5"
       :class="active ? 'bg-accent-50 -translate-y-0.5' : ''"
-      :style="{ borderLeft: `5px solid ${color || 'var(--color-accent-700)'}` }"
+      :style="{ borderLeft: `5px solid ${accent}` }"
       @click="emit('pick', moment)"
       @mouseenter="emit('hover', moment)"
       @mouseleave="emit('hover', null)"
@@ -41,6 +43,14 @@ const mark = computed(() => postmark(props.moment.date))
     </span>
     <span class="sr-only">{{ moment.date }}</span>
 
+    <button
+      v-if="editable"
+      class="absolute right-7 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-accent-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
+      aria-label="Editar"
+      @click="emit('edit', moment)"
+    >
+      ✎
+    </button>
     <button
       v-if="editable"
       class="absolute right-1 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-accent-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
