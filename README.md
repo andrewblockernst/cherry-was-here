@@ -30,14 +30,7 @@ npm run db:seed          # carga la tabla countries
 npm run dev              # http://localhost:3000
 ```
 
-Opcional, para traer los datos de la app Phoenix anterior (solo funciona sobre una DB vacía y abre el origen en modo lectura):
-
-```bash
-npm run db:import                          # usa backend/andrews_timeline_dev.db
-npm run db:import -- ruta/a/otra.db        # o una ruta explícita
-```
-
-Usuario de desarrollo (viene en esa DB importada): `andrew@cherry.local` / `cherry-was-here`, perfil público en `/u/andrew`.
+Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 
 ## Scripts
 
@@ -51,7 +44,6 @@ Usuario de desarrollo (viene en esa DB importada): `andrew@cherry.local` / `cher
 | `npm run db:generate` | Genera una migración a partir de `server/db/schema.ts` |
 | `npm run db:migrate` | Aplica las migraciones |
 | `npm run db:seed` | Carga los países (idempotente) |
-| `npm run db:import` | Importa la DB de Phoenix (una sola vez) |
 
 ## Variables de entorno
 
@@ -75,10 +67,6 @@ Pasar el mouse sobre un moment resalta su país en el globo, y hacer click en un
 ## Deploy
 
 Necesita un servidor Node (`node .output/server/index.mjs`) con las tres variables de entorno de arriba. En producción usá Turso (`DATABASE_URL` + `DATABASE_AUTH_TOKEN`); si en cambio usás un archivo SQLite, necesita un disco persistente. Corré `db:migrate` y `db:seed` contra la DB de destino antes del primer arranque.
-
-## Código legado
-
-`backend/` (Phoenix) y `frontend/` (React + Vite) son la app anterior. Quedan solo como referencia y como fuente del import de datos; están pendientes de eliminación.
 
 ## Licencia
 
