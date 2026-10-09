@@ -1,9 +1,16 @@
+import { PALETTE } from './atlasStyle'
 import type { CountryCounts, Era, EraWithMoments, Moment } from '../../shared/types/app'
 
 export type LngLat = [number, number]
 
+type EraColor = Pick<Era, 'id' | 'color'>
+
+/** Moment color, else its era's color, else the atlas accent. */
+export const effectiveColor = (m: Moment, eras: EraColor[]) =>
+  m.color ?? eras.find(e => e.id === m.era_id)?.color ?? PALETTE.accent
+
 /** Moments as GeoJSON points: own coordinates first, else the country's label point. */
-export function momentFeatures(moments: Moment[], labels: Record<string, LngLat>) {
+export function momentFeatures(moments: Moment[], labels: Record<string, LngLat>, eras: EraColor[] = []) {
   const features = moments.flatMap((m) => {
     const coordinates: LngLat | undefined = m.latitude != null && m.longitude != null
       ? [m.longitude, m.latitude]
@@ -11,7 +18,7 @@ export function momentFeatures(moments: Moment[], labels: Record<string, LngLat>
     if (!coordinates) return []
     return [{
       type: 'Feature' as const,
-      properties: { id: m.id, title: m.title, date: m.date, country_code: m.country_code },
+      properties: { id: m.id, title: m.title, date: m.date, country_code: m.country_code, color: effectiveColor(m, eras) },
       geometry: { type: 'Point' as const, coordinates },
     }]
   })
@@ -23,6 +30,17 @@ export function countryFillExpression<T>(counts: CountryCounts, valueFor: (count
   const entries = Object.entries(counts).filter(([, n]) => n > 0)
   if (!entries.length) return fallback
   return ['match', ['get', 'iso2'], ...entries.flatMap(([iso, n]) => [iso, valueFor(n)]), fallback]
+}
+
+/** MapLibre `match` on `iso2` giving each country the color of its most recent moment; plain accent when there is none. */
+export function countryColorExpression(moments: Moment[], eras: EraColor[] = []) {
+  const latest = new Map<string, Moment>()
+  for (const m of moments) {
+    const cur = m.country_code ? latest.get(m.country_code) : undefined
+    if (m.country_code && (!cur || m.date > cur.date || (m.date === cur.date && m.id > cur.id))) latest.set(m.country_code, m)
+  }
+  if (!latest.size) return PALETTE.accent
+  return ['match', ['get', 'iso2'], ...[...latest].flatMap(([iso, m]) => [iso, effectiveColor(m, eras)]), PALETTE.accent]
 }
 
 /** Eras with their moments (oldest first); moments without a known era trail in a synthetic "Sin era" group. */

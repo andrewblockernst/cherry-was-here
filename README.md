@@ -57,10 +57,22 @@ Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 
 Hay un único globo a pantalla completa que persiste entre rutas; todo lo demás son capas encima:
 
-- **Marca** "yafue" arriba al centro y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
-- **Menú lateral** con tres pestañas: *Explorar* (vidas públicas), *Tu vida* (tu timeline, crear y borrar moments, o entrar / crear cuenta) y *Opciones* (animaciones y créditos).
+- **Marca** "yafue" arriba a la derecha y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
+- **Menú lateral** con tres pestañas: *Explorar* (vidas públicas), *Tu vida* (tu timeline, crear, editar y borrar moments y eras, o entrar / crear cuenta) y *Opciones* (animaciones y créditos).
 - Los moments se muestran como **estampillas** con matasellos en las listas y en los popups del globo. Pasar el mouse por uno resalta su país; hacer click vuela hasta él.
 - En tu mapa (`/me`), hacer click en un país abre el formulario de nuevo moment con ese país.
+
+### Eras y colores
+
+En *Tu vida*, **+ Nueva era** y **Editar eras** abren el editor: título, años (el fin es opcional), emoji y color (selector nativo más una fila de muestras), con vista previa. Se pueden editar, borrar (sus moments quedan sin era) y reordenar con subir/bajar. Los moments también se editan desde su estampilla.
+
+El color de cada punto del globo sigue esta precedencia: **color del moment > color de su era > acento**. Cada país se pinta con el color de su moment más reciente. El mundo (`/`) solo tiene conteos agregados, así que se queda en el acento.
+
+La migración `0001` agrega `moments.color`; aplicala a la DB de destino antes de desplegar:
+
+```bash
+npx tsx --env-file=.env scripts/migrate.ts
+```
 
 ### Movimiento
 

@@ -45,6 +45,7 @@ export interface Moment {
   longitude: number | null
   photo_url: string | null
   era_id: number | null
+  color: string | null
 }
 
 export interface EraWithMoments extends Era {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Country, Era, Moment, Visibility } from '../../shared/types/app'
+import { PALETTE } from '../utils/atlasStyle'
 
 const props = defineProps<{
   open: boolean
@@ -7,6 +8,8 @@ const props = defineProps<{
   countries: Country[]
   defaultCountryCode?: string | null
   defaultCountryName?: string | null
+  /** When set, the form edits this moment instead of creating one. */
+  moment?: Moment | null
 }>()
 const emit = defineEmits<{ close: [], save: [moment: Partial<Moment>] }>()
 
@@ -18,20 +21,29 @@ const location = ref('')
 const body = ref('')
 const eraId = ref('')
 const visibility = ref<Visibility>('private')
+const ownColor = ref(false)
+const color = ref<string>(PALETTE.accent)
 const saving = ref(false)
 const error = ref<string | null>(null)
 
 const dialog = ref<HTMLElement>()
 
+/** Color the moment gets without an override: its era's, else the atlas accent. */
+const inherited = computed(() => props.eras.find(e => String(e.id) === eraId.value)?.color || PALETTE.accent)
+const shown = computed(() => (ownColor.value ? color.value : inherited.value))
+
 watch(() => props.open, async (open) => {
   if (!open) return
-  title.value = ''
-  date.value = today()
-  countryCode.value = props.defaultCountryCode || ''
-  location.value = ''
-  body.value = ''
-  eraId.value = props.eras[0] ? String(props.eras[0].id) : ''
-  visibility.value = 'private'
+  const m = props.moment
+  title.value = m?.title ?? ''
+  date.value = m?.date ?? today()
+  countryCode.value = m ? m.country_code ?? '' : props.defaultCountryCode || ''
+  location.value = m?.location ?? ''
+  body.value = m?.body ?? ''
+  eraId.value = m ? (m.era_id != null ? String(m.era_id) : '') : props.eras[0] ? String(props.eras[0].id) : ''
+  visibility.value = m?.visibility ?? 'private'
+  ownColor.value = !!m?.color
+  color.value = m?.color ?? PALETTE.accent
   error.value = null
   await nextTick()
   dialog.value?.querySelector<HTMLElement>('input')?.focus()
@@ -51,18 +63,18 @@ async function submit() {
   saving.value = true
   error.value = null
   try {
-    await $fetch('/api/moments', {
-      method: 'POST',
-      body: {
-        title: title.value,
-        date: date.value,
-        country_code: countryCode.value || null,
-        location: location.value || null,
-        body: body.value || null,
-        era_id: eraId.value ? Number(eraId.value) : null,
-        visibility: visibility.value,
-      },
-    })
+    const payload = {
+      title: title.value,
+      date: date.value,
+      country_code: countryCode.value || null,
+      location: location.value || null,
+      body: body.value || null,
+      era_id: eraId.value ? Number(eraId.value) : null,
+      visibility: visibility.value,
+      color: ownColor.value ? color.value : null,
+    }
+    if (props.moment) await $fetch(`/api/moments/${props.moment.id}`, { method: 'PATCH', body: payload })
+    else await $fetch('/api/moments', { method: 'POST', body: payload })
     emit('save', { country_code: countryCode.value || null })
     emit('close')
   } catch (e) {
@@ -86,7 +98,7 @@ async function submit() {
         @keydown="trapTab"
       >
         <header class="mb-4 flex items-center justify-between">
-          <h2 id="add-moment-title" class="font-display text-2xl font-semibold text-ink-900">Nuevo moment{{ defaultCountryName ? ` · ${defaultCountryName}` : '' }}</h2>
+          <h2 id="add-moment-title" class="font-display text-2xl font-semibold text-ink-900">{{ moment ? 'Editar moment' : 'Nuevo moment' }}{{ !moment && defaultCountryName ? ` · ${defaultCountryName}` : '' }}</h2>
           <button class="btn-ghost" aria-label="Cerrar" @click="emit('close')">✕</button>
         </header>
 
@@ -135,6 +147,20 @@ async function submit() {
                 <option value="public">Público</option>
               </select>
             </label>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="flex items-center gap-2">
+              <input v-model="ownColor" type="checkbox">
+              <span class="label">Color propio</span>
+            </label>
+            <div class="flex flex-wrap items-center gap-3">
+              <ColorPicker v-if="ownColor" v-model="color" label="Color del moment" />
+              <span class="stamp inline-block py-1.5 pl-3 pr-4 text-sm text-ink-900" :style="{ borderLeft: `5px solid ${shown}` }">
+                {{ title || 'Vista previa' }}
+              </span>
+              <span v-if="!ownColor" class="text-xs italic text-ink-600">Usa el color de su era.</span>
+            </div>
           </div>
 
           <p v-if="error" role="alert" class="text-sm text-accent-700">{{ error }}</p>

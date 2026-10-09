@@ -6,14 +6,13 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import type { FeatureCollection, Point } from 'geojson'
 import { atlasStyle, PALETTE, SKY } from '../utils/atlasStyle'
 import { postmark } from '../utils/format'
-import { countryFillExpression, focusFor, momentFeatures, rotateLng, type LngLat } from '../utils/globe'
+import { countryColorExpression, countryFillExpression, focusFor, momentFeatures, rotateLng, type LngLat } from '../utils/globe'
 
 const { state, highlighted, selectOnGlobe } = useAtlas()
 const { names } = useCountries()
 const { enabled: motion } = useMotion()
 
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
-const GLOW = '#E11D48'
 const POINT_LAYERS = ['outer_points', 'mid_points', 'inner_points']
 const DRAWER_PX = 380
 const SPIN_DEG_PER_SEC = 4
@@ -31,7 +30,8 @@ const ready = ref(false)
 
 const visitedOpacity = () => countryFillExpression(state.value.countryCounts, n => Math.min(0.32 + 0.12 * n, 0.8)) as ExpressionSpecification
 const lineOpacity = () => countryFillExpression(state.value.countryCounts, () => 0.9) as ExpressionSpecification
-const pointsData = () => momentFeatures(state.value.moments, labels)
+const fillColor = () => countryColorExpression(state.value.moments, state.value.eras) as ExpressionSpecification
+const pointsData = () => momentFeatures(state.value.moments, labels, state.value.eras)
 const highlightFilter = (): ExpressionSpecification => ['==', ['get', 'iso2'], highlighted.value ?? '']
 const nameOf = (iso2: string, fallback: string) => names.value[iso2] || fallback
 
@@ -43,8 +43,8 @@ function addCountryLayers(m: MlMap, geojson: FeatureCollection) {
   const before = m.getStyle().layers.find(l => l.type === 'symbol')?.id
   m.addSource('countries', { type: 'geojson', data: geojson })
   m.addLayer({ id: 'countries-hit', type: 'fill', source: 'countries', paint: { 'fill-opacity': 0 } }, before)
-  m.addLayer({ id: 'visited-fill', type: 'fill', source: 'countries', paint: { 'fill-color': PALETTE.accent, 'fill-opacity': visitedOpacity() } }, before)
-  m.addLayer({ id: 'visited-line', type: 'line', source: 'countries', paint: { 'line-color': PALETTE.accentDeep, 'line-width': 1, 'line-opacity': lineOpacity() } }, before)
+  m.addLayer({ id: 'visited-fill', type: 'fill', source: 'countries', paint: { 'fill-color': fillColor(), 'fill-opacity': visitedOpacity() } }, before)
+  m.addLayer({ id: 'visited-line', type: 'line', source: 'countries', paint: { 'line-color': fillColor(), 'line-width': 1, 'line-opacity': lineOpacity() } }, before)
   m.addLayer({ id: 'highlight-fill', type: 'fill', source: 'countries', filter: highlightFilter(), paint: { 'fill-color': PALETTE.accentDeep, 'fill-opacity': 0.55 } }, before)
   m.addLayer({ id: 'highlight-line', type: 'line', source: 'countries', filter: highlightFilter(), paint: { 'line-color': PALETTE.ink, 'line-width': 1.6 } }, before)
 }
@@ -59,7 +59,7 @@ function addPointLayers(m: MlMap) {
   const circle = (id: string, extra: number, opacity: number, blur: number, stroke = 0) => m.addLayer({
     id, type: 'circle', source: 'moments',
     paint: {
-      'circle-color': id === 'inner_points' ? PALETTE.accent : GLOW,
+      'circle-color': ['get', 'color'],
       'circle-opacity': opacity,
       'circle-radius': radius(extra),
       'circle-blur': blur,
@@ -216,7 +216,13 @@ watch(() => state.value.countryCounts, () => {
   map!.setPaintProperty('visited-fill', 'fill-opacity', visitedOpacity())
   map!.setPaintProperty('visited-line', 'line-opacity', lineOpacity())
 })
-watch(() => state.value.moments, () => ready.value && (map!.getSource('moments') as GeoJSONSource).setData(pointsData()))
+function syncMoments() {
+  if (!ready.value) return
+  ;(map!.getSource('moments') as GeoJSONSource).setData(pointsData())
+  map!.setPaintProperty('visited-fill', 'fill-color', fillColor())
+  map!.setPaintProperty('visited-line', 'line-color', fillColor())
+}
+watch(() => [state.value.moments, state.value.eras], syncMoments)
 watch(highlighted, () => {
   if (!ready.value) return
   map!.setFilter('highlight-fill', highlightFilter())

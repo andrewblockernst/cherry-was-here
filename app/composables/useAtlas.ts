@@ -19,13 +19,13 @@ export interface AtlasState {
   focus: { iso2: string | null, momentId: number | null, n: number } | null
   /** Identity of the data on the globe (`owner:slug`); the camera re-frames when it changes. */
   viewKey: string
-  modal: { open: boolean, code: string | null, name: string | null }
+  modal: { open: boolean, code: string | null, name: string | null, moment: Moment | null }
 }
 
 const initial = (): AtlasState => ({
   owner: 'world', user: null, missing: null, countryCounts: {}, moments: [], eras: [],
   drawerOpen: false, panel: 'explore', hovered: null, selected: null, focus: null, viewKey: 'world:',
-  modal: { open: false, code: null, name: null },
+  modal: { open: false, code: null, name: null, moment: null },
 })
 
 const isMobile = () => import.meta.client && window.matchMedia('(max-width: 767px)').matches
@@ -61,7 +61,10 @@ export function useAtlas() {
   }
 
   function openModal(code: string | null = null, name: string | null = null) {
-    state.value.modal = { open: true, code, name }
+    state.value.modal = { open: true, code, name, moment: null }
+  }
+  const editMoment = (moment: Moment) => {
+    state.value.modal = { open: true, code: moment.country_code, name: null, moment }
   }
   const closeModal = () => { state.value.modal.open = false }
 
@@ -77,5 +80,8 @@ export function useAtlas() {
     await refreshNuxtData('me-moments')
   }
 
-  return { state, highlighted, show, enter, setDrawer, toggleDrawer, hover, flyTo, pick, openModal, closeModal, selectOnGlobe, removeMoment }
+  /** Reloads the signed-in user's eras and moments after any change to either. */
+  const refreshTimeline = () => Promise.all([refreshNuxtData('me-eras'), refreshNuxtData('me-moments')])
+
+  return { editMoment, refreshTimeline, state, highlighted, show, enter, setDrawer, toggleDrawer, hover, flyTo, pick, openModal, closeModal, selectOnGlobe, removeMoment }
 }
