@@ -18,7 +18,7 @@ const mark = computed(() => postmark(props.moment.date))
 <template>
   <li class="stamp-item stamp-shadow relative">
     <button
-      class="stamp block w-full py-3.5 pl-4 pr-16 text-left transition-transform duration-300 ease-out-quart hover:-translate-y-0.5"
+      class="stamp block min-h-[6.5rem] w-full py-3.5 pl-4 pr-16 text-left transition-transform duration-300 ease-out-quart hover:-translate-y-0.5"
       :class="active ? 'bg-accent-50 -translate-y-0.5' : ''"
       :style="{ borderLeft: `5px solid ${accent}` }"
       @click="emit('pick', moment)"
@@ -43,21 +43,13 @@ const mark = computed(() => postmark(props.moment.date))
     </span>
     <span class="sr-only">{{ moment.date }}</span>
 
-    <button
-      v-if="editable"
-      class="absolute right-7 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-accent-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
-      aria-label="Editar"
-      @click="emit('edit', moment)"
-    >
-      ✎
-    </button>
-    <button
-      v-if="editable"
-      class="absolute right-1 top-1 z-10 rounded-sm p-1 text-sm text-ink-500 opacity-0 transition-opacity hover:text-accent-700 focus:opacity-100 [li:hover_&]:opacity-100 [li:focus-within_&]:opacity-100"
-      aria-label="Eliminar"
-      @click="emit('delete', moment.id)"
-    >
-      🗑
-    </button>
+    <span v-if="editable" class="absolute bottom-1.5 right-1.5 z-10 flex gap-1">
+      <button class="stamp-action hover:text-accent-700" aria-label="Editar" title="Editar" @click="emit('edit', moment)">
+        <AppIcon name="pencil" />
+      </button>
+      <button class="stamp-action hover:text-red-700" aria-label="Eliminar" title="Eliminar" @click="emit('delete', moment.id)">
+        <AppIcon name="trash" />
+      </button>
+    </span>
   </li>
 </template>
