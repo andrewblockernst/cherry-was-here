@@ -1,4 +1,4 @@
-import type { CountryCounts, Moment } from '../../shared/types/cherry'
+import type { CountryCounts, Era, EraWithMoments, Moment } from '../../shared/types/cherry'
 
 export type LngLat = [number, number]
 
@@ -23,4 +23,42 @@ export function countryFillExpression<T>(counts: CountryCounts, valueFor: (count
   const entries = Object.entries(counts).filter(([, n]) => n > 0)
   if (!entries.length) return fallback
   return ['match', ['get', 'iso2'], ...entries.flatMap(([iso, n]) => [iso, valueFor(n)]), fallback]
+}
+
+/** Eras with their moments (oldest first); moments without a known era trail in a synthetic "Sin era" group. */
+export function groupByEra(eras: Era[], moments: Moment[]): EraWithMoments[] {
+  const byDate = (a: Moment, b: Moment) => a.date.localeCompare(b.date)
+  const known = new Set(eras.map(e => e.id))
+  const groups: EraWithMoments[] = eras.map(e => ({ ...e, moments: moments.filter(m => m.era_id === e.id).sort(byDate) }))
+  const loose = moments.filter(m => m.era_id == null || !known.has(m.era_id)).sort(byDate)
+  if (loose.length) {
+    groups.push({ id: 0, title: 'Sin era', slug: 'sin-era', start_year: 0, end_year: null, color: null, emoji: '✉️', order_index: null, moments: loose })
+  }
+  return groups
+}
+
+export interface CameraFocus { center: LngLat, zoom: number }
+const WORLD: CameraFocus = { center: [-20, 20], zoom: 2 }
+const rad = (d: number) => (d * Math.PI) / 180
+const deg = (r: number) => (r * 180) / Math.PI
+
+/** Camera that frames a set of points on a globe: spherical mean as center, zoom from the widest angular spread. */
+export function focusFor(points: LngLat[]): CameraFocus {
+  if (!points.length) return WORLD
+  const vecs = points.map(([lng, lat]) => [Math.cos(rad(lat)) * Math.cos(rad(lng)), Math.cos(rad(lat)) * Math.sin(rad(lng)), Math.sin(rad(lat))] as const)
+  const sum = vecs.reduce((a, v) => [a[0] + v[0], a[1] + v[1], a[2] + v[2]], [0, 0, 0])
+  const norm = Math.hypot(sum[0], sum[1], sum[2])
+  if (norm < 1e-6) return WORLD
+  const [x, y, z] = sum.map(c => c / norm) as [number, number, number]
+  const center: LngLat = [deg(Math.atan2(y, x)), deg(Math.asin(Math.min(1, Math.max(-1, z))))]
+  const widest = Math.max(...vecs.map(v => deg(Math.acos(Math.min(1, Math.max(-1, v[0] * x + v[1] * y + v[2] * z))))))
+  const zoom = 2.3 + Math.log2(90 / Math.max(widest, 8)) * 0.9
+  return { center, zoom: Math.min(4.6, Math.max(1.8, zoom)) }
+}
+
+/** Longitude after `dtMs` of idle spin; frames longer than 100ms are clamped, the result wraps into [-180, 180). */
+export function rotateLng(lng: number, dtMs: number, degPerSec: number): number {
+  const dt = Math.min(Math.max(dtMs, 0), 100)
+  const next = lng + (degPerSec * dt) / 1000
+  return ((((next + 180) % 360) + 360) % 360) - 180
 }

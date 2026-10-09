@@ -1,7 +1,32 @@
 @import "tailwindcss";
 
+/* Vintage atlas palette: aged paper, faded sea, ink-brown lines, cherry as the single accent. */
 @theme {
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Lora", Georgia, serif;
+  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
+  --font-type: "Special Elite", "Courier New", monospace;
+
+  --color-paper-50: #fbf5e6;
+  --color-paper-100: #f3e9d2;
+  --color-paper-200: #e9dcbc;
+  --color-paper-300: #d9c79b;
+  --color-paper-400: #c4ac78;
+
+  --color-ink-300: #b9a48c;
+  --color-ink-400: #a08a72;
+  --color-ink-500: #86705a;
+  --color-ink-600: #6b533f;
+  --color-ink-700: #523d2c;
+  --color-ink-800: #3b2a1d;
+  --color-ink-900: #271a11;
+
+  --color-sea-300: #b4c4bd;
+  --color-sea-400: #94ada9;
+  --color-sea-500: #738f8d;
+  --color-sea-700: #41605f;
+
+  --color-space-900: #0d1119;
+  --color-space-800: #151b28;
 
   --color-cherry-50: #fff1f2;
   --color-cherry-100: #ffe4e6;
@@ -13,4 +38,237 @@
   --color-cherry-700: #be123c;
   --color-cherry-800: #9f1239;
   --color-cherry-900: #881337;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --drawer-w: 380px;
+  /* Fractal noise, tinted ink-brown; `soft` is faint enough to sit under text, the plain one is for the film-grain overlay. */
+  --paper-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .2  0 0 0 0 .13  0 0 0 0 .07  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --paper-grain-soft: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .14  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-space-900);
+  color: var(--color-ink-800);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--color-cherry-600); outline-offset: 2px; }
+
+/* Aged paper surface used by the drawer and modal. */
+.paper {
+  background-color: var(--color-paper-100);
+  background-image:
+    radial-gradient(120% 80% at 0% 0%, rgb(255 250 235 / 0.7), transparent 60%),
+    radial-gradient(100% 70% at 100% 100%, rgb(196 172 120 / 0.22), transparent 65%),
+    var(--paper-grain-soft);
+  background-size: auto, auto, 220px 220px;
+}
+
+/* Film grain + vignette over the whole viewport; never intercepts input. */
+.grain {
+  position: fixed;
+  inset: -40px;
+  z-index: 90;
+  pointer-events: none;
+  background-image: var(--paper-grain);
+  opacity: 0.12;
+  mix-blend-mode: soft-light;
+}
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgb(8 10 18 / 0.55) 100%);
+}
+
+/* Postage stamp: perforated edge via a four-sided radial-gradient mask. */
+.stamp {
+  --r: 3.5px;
+  --gap: 13px;
+  --hole-y: radial-gradient(circle var(--r) at 50% 0, #0000 97%, #000);
+  --hole-yb: radial-gradient(circle var(--r) at 50% 100%, #0000 97%, #000);
+  --hole-x: radial-gradient(circle var(--r) at 0 50%, #0000 97%, #000);
+  --hole-xr: radial-gradient(circle var(--r) at 100% 50%, #0000 97%, #000);
+  position: relative;
+  background-color: var(--color-paper-50);
+  background-image: var(--paper-grain-soft);
+  background-size: 220px 220px;
+  -webkit-mask-image: var(--hole-y), var(--hole-yb), var(--hole-x), var(--hole-xr);
+  mask-image: var(--hole-y), var(--hole-yb), var(--hole-x), var(--hole-xr);
+  -webkit-mask-size: var(--gap) 100%, var(--gap) 100%, 100% var(--gap), 100% var(--gap);
+  mask-size: var(--gap) 100%, var(--gap) 100%, 100% var(--gap), 100% var(--gap);
+  -webkit-mask-repeat: round no-repeat, round no-repeat, no-repeat round, no-repeat round;
+  mask-repeat: round no-repeat, round no-repeat, no-repeat round, no-repeat round;
+  -webkit-mask-position: top left, bottom left, top left, top right;
+  mask-position: top left, bottom left, top left, top right;
+  -webkit-mask-composite: source-in, source-in, source-in;
+  mask-composite: intersect;
+}
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgb(82 61 44 / 0.35);
+  pointer-events: none;
+}
+.stamp-shadow { filter: drop-shadow(0 1px 0 rgb(82 61 44 / 0.25)) drop-shadow(0 6px 8px rgb(39 26 17 / 0.18)); }
+
+/* Cancellation mark that overlaps the stamp corner. */
+.postmark {
+  position: absolute;
+  right: -2px;
+  top: -8px;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1.5px solid rgb(107 83 63 / 0.55);
+  border-radius: 50%;
+  color: rgb(82 61 44 / 0.75);
+  font: 600 8px/1.15 var(--font-type);
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+.postmark::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 30%;
+  width: 34px;
+  height: 14px;
+  background: repeating-linear-gradient(180deg, rgb(107 83 63 / 0.5) 0 1.5px, transparent 1.5px 5px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000);
+  mask-image: linear-gradient(90deg, transparent, #000);
+}
+
+/* Form controls on paper. */
+.field {
+  margin-top: 0.25rem;
+  width: 100%;
+  border: 1px solid var(--color-paper-400);
+  border-radius: 2px;
+  background: rgb(251 245 230 / 0.7);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-ink-900);
+}
+.field:focus { border-color: var(--color-cherry-600); outline: 2px solid rgb(225 29 72 / 0.25); outline-offset: 0; }
+.label { font: 400 0.7rem/1 var(--font-type); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-600); }
+.btn-cherry {
+  border-radius: 2px;
+  background: var(--color-cherry-700);
+  padding: 0.55rem 1rem;
+  font: 400 0.8rem/1 var(--font-type);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-paper-50);
+  box-shadow: 0 2px 0 var(--color-cherry-900);
+}
+.btn-cherry:hover { background: var(--color-cherry-600); }
+.btn-cherry:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--color-cherry-900); }
+.btn-cherry:disabled { opacity: 0.55; }
+.btn-ghost { border-radius: 2px; padding: 0.5rem 0.9rem; font: 400 0.8rem/1 var(--font-type); color: var(--color-ink-700); }
+.btn-ghost:hover { background: rgb(82 61 44 / 0.1); }
+
+/* Popups on the map share the stamp look. */
+.maplibregl-popup-content {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.maplibregl-popup-tip { display: none; }
+.maplibregl-ctrl-attrib { background: rgb(243 233 210 / 0.8) !important; font-family: var(--font-sans); }
+
+/* Deep-ink space behind the globe, sprinkled with a few faint stars. */
+.space {
+  background:
+    radial-gradient(1.2px 1.2px at 8% 14%, rgb(255 244 220 / 0.85), transparent),
+    radial-gradient(1px 1px at 22% 72%, rgb(255 244 220 / 0.6), transparent),
+    radial-gradient(1.4px 1.4px at 34% 28%, rgb(255 244 220 / 0.7), transparent),
+    radial-gradient(1px 1px at 47% 90%, rgb(255 244 220 / 0.55), transparent),
+    radial-gradient(1.2px 1.2px at 63% 10%, rgb(255 244 220 / 0.8), transparent),
+    radial-gradient(1px 1px at 78% 64%, rgb(255 244 220 / 0.6), transparent),
+    radial-gradient(1.4px 1.4px at 91% 22%, rgb(255 244 220 / 0.75), transparent),
+    radial-gradient(1px 1px at 88% 86%, rgb(255 244 220 / 0.55), transparent),
+    radial-gradient(1px 1px at 15% 44%, rgb(255 244 220 / 0.5), transparent),
+    radial-gradient(1px 1px at 55% 52%, rgb(255 244 220 / 0.35), transparent),
+    radial-gradient(ellipse at 50% 55%, #1b2335 0%, #0d1119 72%);
+}
+
+.popup-stamp { min-width: 8.5rem; padding: 0.7rem 1.1rem 0.65rem; }
+.popup-title { font: 600 0.95rem/1.2 var(--font-display); color: var(--color-ink-900); }
+.popup-date { margin-top: 0.2rem; font: 400 0.66rem/1 var(--font-type); letter-spacing: 0.1em; color: var(--color-ink-600); }
+
+/* ---- Motion ---- */
+.globe { opacity: 0; transition: opacity 1.6s var(--ease-out-quart); }
+.globe.is-ready { opacity: 1; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+/* Items of the open drawer rise in one after another; replays every time the drawer opens. */
+.drawer-open .stagger,
+.drawer-open .era,
+.drawer-open .stamp-item {
+  animation: rise 0.7s var(--ease-out-expo) both;
+  animation-delay: calc(180ms + var(--i, 0) * 70ms + var(--k, 0) * 60ms);
+}
+
+.panel-enter-active, .panel-leave-active { transition: opacity 0.28s var(--ease-out-quart), transform 0.38s var(--ease-out-quart); }
+.panel-enter-from { opacity: 0; transform: translateX(18px); }
+.panel-leave-to { opacity: 0; transform: translateX(-18px); }
+
+.modal-enter-active, .modal-leave-active { transition: opacity 0.25s ease; }
+.modal-enter-active .modal-card, .modal-leave-active .modal-card { transition: transform 0.5s var(--ease-out-expo), opacity 0.25s ease; }
+.modal-enter-from, .modal-leave-to { opacity: 0; }
+.modal-enter-from .modal-card { opacity: 0; transform: translateY(26px) scale(0.96) rotate(-0.8deg); }
+.modal-leave-to .modal-card { opacity: 0; transform: translateY(10px) scale(0.98); }
+
+/* On/off switch for the animations option. */
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.9rem;
+  height: 1.6rem;
+  border: 1px solid var(--color-ink-600);
+  border-radius: 999px;
+  background: var(--color-paper-200);
+  transition: background-color 0.3s ease;
+}
+.switch > span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(1.6rem - 6px);
+  height: calc(1.6rem - 6px);
+  border-radius: 50%;
+  background: var(--color-ink-700);
+  transition: transform 0.4s var(--ease-out-expo), background-color 0.3s ease;
+}
+.switch[aria-checked="true"] { background: var(--color-cherry-100); }
+.switch[aria-checked="true"] > span { transform: translateX(1.3rem); background: var(--color-cherry-700); }
+.switch:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Motion off (in-app toggle or OS setting): no animation or transition anywhere. */
+[data-motion="off"] *, [data-motion="off"] *::before, [data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

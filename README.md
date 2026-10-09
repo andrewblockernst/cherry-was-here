@@ -2,10 +2,10 @@
 
 Una app web para mapear tu vida en dos vistas que comparten datos:
 
-- **Globo** — los países donde estuviste y tus moments como puntos sobre un globo 3D (MapLibre).
-- **Timeline** — tu vida partida en eras (infancia, secundaria, etc.) con los moments de cada una.
+- **Globo** — la pantalla completa es el mundo: los países donde estuviste y tus moments como puntos sobre un globo 3D (MapLibre), con estética de atlas antiguo.
+- **Timeline** — tu vida partida en eras (infancia, secundaria, etc.) con los moments de cada una, como estampillas con matasellos, dentro del menú lateral.
 
-Un `moment` puede tener país (aparece en el globo) y pertenecer a una era (aparece en la timeline). Es multiusuario: cada persona arma su vida y decide qué moments son públicos. La home (`/`) explora las vidas públicas de otros.
+Un `moment` puede tener país (aparece en el globo) y pertenecer a una era (aparece en la timeline). Es multiusuario: cada persona arma su vida y decide qué moments son públicos. Desde el menú (hamburguesa arriba a la izquierda) se exploran las vidas públicas de otros.
 
 ## Stack
 
@@ -14,8 +14,8 @@ Un `moment` puede tener país (aparece en el globo) y pertenecer a una era (apar
 | Framework | Nuxt 4 (Vue 3) + Nitro (rutas de servidor en `server/api`) |
 | DB | Drizzle ORM + libSQL: archivo SQLite en local, Turso en producción |
 | Auth | email + contraseña (bcryptjs), sesión por cookie sellada con `nuxt-auth-utils` |
-| Estilos | Tailwind CSS v4 (escala `cherry` en `app/assets/css/main.css`) |
-| Mapa | `maplibre-gl` con proyección globo, estilo OpenFreeMap (sin API key) y países de Natural Earth 110m |
+| Estilos | Tailwind CSS v4: paleta papel/tinta/mar y escala `cherry` como tokens en `app/assets/css/main.css`; tipografías Fraunces, Lora y Special Elite (Google Fonts) |
+| Mapa | `maplibre-gl` con proyección globo, estilo OpenFreeMap (sin API key) recoloreado en `app/utils/atlasStyle.ts` y países de Natural Earth 110m |
 | Tests | Vitest |
 
 ## Puesta en marcha
@@ -53,16 +53,27 @@ Creá una cuenta desde `/login`; tu perfil público queda en `/u/<slug>`.
 | `DATABASE_AUTH_TOKEN` | Token de Turso (vacío en local) |
 | `NUXT_SESSION_PASSWORD` | Clave para sellar la cookie de sesión, mínimo 32 caracteres. Nunca la subas al repo |
 
+## Interfaz
+
+Hay un único globo a pantalla completa que persiste entre rutas; todo lo demás son capas encima:
+
+- **Marca** "Cherry Was Here" arriba al centro y **hamburguesa** arriba a la izquierda (`Esc` cierra el menú).
+- **Menú lateral** con tres pestañas: *Explorar* (vidas públicas), *Tu vida* (tu timeline, crear y borrar moments, o entrar / crear cuenta) y *Opciones* (animaciones y créditos).
+- Los moments se muestran como **estampillas** con matasellos en las listas y en los popups del globo. Pasar el mouse por uno resalta su país; hacer click vuela hasta él.
+- En tu mapa (`/me`), hacer click en un país abre el formulario de nuevo moment con ese país.
+
+### Movimiento
+
+Intro de cámara, giro lento del globo en reposo (se detiene al interactuar), puntos que laten, menú con entrada escalonada y transiciones entre paneles. Se desactiva todo con la opción *Animaciones* del menú (se guarda en `localStorage`) y automáticamente si el sistema pide `prefers-reduced-motion`.
+
 ## Rutas
 
 | Ruta | Qué hace |
 |------|---------|
-| `/` | Explorar: grilla de usuarios con perfil público |
-| `/login` | Entrar o crear cuenta |
-| `/me` | Tu vida (requiere sesión): globo, timeline, lista de moments, crear y borrar |
-| `/u/[slug]` | Perfil público: globo y timeline con sus moments públicos |
-
-Pasar el mouse sobre un moment resalta su país en el globo, y hacer click en un punto o país del globo resalta los moments en la timeline.
+| `/` | El globo del mundo; el menú abre en *Explorar* con los usuarios de perfil público |
+| `/login` | Globo con el menú abierto en el formulario para entrar o crear cuenta |
+| `/me` | Tu vida (requiere sesión): tus países y moments en el globo, timeline y gestión en el menú |
+| `/u/[slug]` | Perfil público: el globo vuela a sus países y el menú muestra su timeline |
 
 ## Deploy
 
