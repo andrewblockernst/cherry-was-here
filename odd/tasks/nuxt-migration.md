@@ -29,9 +29,9 @@ Two runtimes (Elixir + Vite) are overkill for a small multi-user "where I've bee
 - [x] T1 Scaffold Nuxt 4 + Tailwind v4 + Vitest at root; fix `.gitignore`. Route: delegated (writer, 2+ files).
 - [x] T2 DB layer: Drizzle schema, migrations, countries seed, import script from the Phoenix DB. Route: delegated.
 - [x] T3 Server API + auth with tests. Route: delegated.
-- [ ] T4 Vue pages + components (explore, login, me, profile, timeline, add-moment modal). Route: delegated.
-- [ ] T5 MapLibre globe component (Rezi look). Route: delegated.
-- [ ] T6 README rewrite for the Nuxt app. Route: delegated with T5.
+- [x] T4 Vue pages + components (explore, login, me, profile, timeline, add-moment modal). Route: delegated.
+- [x] T5 MapLibre globe component (Rezi look). Route: delegated.
+- [x] T6 README rewrite for the Nuxt app. Route: delegated with T5.
 
 ## Acceptance criteria
 - `npm run build`, `npm test`, `npx nuxi typecheck` pass.
@@ -43,6 +43,10 @@ Two runtimes (Elixir + Vite) are overkill for a small multi-user "where I've bee
 - T1 (316fe1e): `npm run build`: ok; `npx nuxi typecheck`: ok (no errors); `npm test`: no tests yet (Vitest 5 runs, exits 1 on empty suite; tests land in T2/T3). Stack: nuxt 4.6, tailwind 4.3 via @tailwindcss/vite, nuxt-auth-utils 0.5, typescript 5.9 (7.x not used: Nuxt/vue-tsc toolchain targets 5.x). `data/.gitkeep` keeps the DB dir.
 - T2 (e1ed289): TDD RED observed (tests/db.test.ts failed: `../server/db/seed` / `scripts/import-phoenix` modules missing), then GREEN: `npm test`: 3 passed (seed idempotent, import preserves ids/hash, import refuses non-empty target). `npx nuxi typecheck`: ok. Local `data/cherry.db` (gitignored) via `db:migrate` + `db:import` + `db:seed`: users 2, eras 5, moments 11, countries 64. Timestamps are ISO text (`inserted_at`/`updated_at`) like Phoenix; `moments.date` is text YYYY-MM-DD.
 - T3 (707ab89): TDD RED observed (tests/api.test.ts failed: `../server/utils/accounts` missing), then GREEN after implementation (one extra RED->GREEN fix: Drizzle wraps UNIQUE errors, so `isUniqueViolation` walks the `cause` chain). `npm test`: 2 files, 16 tests passed. `npx nuxi typecheck`: ok. `npm run build`: ok. Smoke (built server, port 3399, imported DB): `GET /api/countries` 200 (64 countries); `GET /api/explore` 200 (andrew 4 countries/8 moments, second user 1/1); `GET /api/users/andrew` 200 (eras with public moments); `GET /api/me` without cookie 401; `POST /api/session` andrew@cherry.local/cherry-was-here 200 + cookie, wrong password 401 `{error}`; `GET /api/me` with cookie 200; `GET /api/moments` 200; invalid `POST /api/moments` 422 `{errors}`; `PATCH /api/moments/99999` 404. Deviations from Phoenix JSON: login/register no longer return `token` (cookie session), responses are `{ user }`; 401 from missing session uses Nitro's standard error body. Extras: moment `era_id` must be the user's own era and `country_code` must exist (422).
+- T5 (b87c400, committed before T4 so each commit builds: T4 pages import the globe): TDD RED observed (tests/globe.test.ts failed: `../app/utils/globe` missing), then GREEN (moment point placement: own coords, else country label point, else skipped; `match` expression per visited country). maplibre-gl 6.13 (ESM only, no default export; `setProjection({type:'globe'})` on style.load). Its worker URL resolves relative to the bundled chunk and 404s, so the worker is bundled by Vite (`maplibre-gl-worker.mjs?worker&url` + `setWorkerUrl`). Natural Earth 110m admin-0 stripped to {iso2 (ISO_A2_EH), name, label} at public/geo/countries.geojson (198 kB, 177 features; N. Cyprus and Somaliland keep -99 and are not clickable). Basemap: OpenFreeMap positron, noisy symbol layers hidden, background=land #FAFAFA, water #CBD5E1.
+- T4 (db571be): pages /, /login, /me (route middleware `auth`), /u/[slug]; layout, TimelineView, MomentList, AddMomentModal, TabSwitch, useCountries; UI copy kept in Spanish. Types ported to shared/types/cherry.ts (T5 commit). No dark mode in the app, so none added.
+- T6 (508842c): README rewritten in Spanish.
+- Verification (final tree): `npm test`: 3 files, 22 tests passed. `npx nuxi typecheck`: ok. `npm run build`: ok. Smoke (built server, port 3398): GET / 200, /u/andrew 200 (renders 4 paises, 8 moments), /login 200, /u/nobody 200 (shows not-found message, status is not 404), /me without cookie 302 to /login; POST /api/session 200 then GET /me with cookie 200. Visual: headless Chrome via CDP screenshot of /u/andrew showed the globe with Spain and Brazil filled in cherry pink and glow points; unverified visually: /me, add-moment modal, delete, hover/click cross-highlight, timeline tab (only HTTP-level checks).
 
 ## Next step
-T4.
+User review of T4-T6 and manual click-through of /me; then decide on removing backend/ and frontend/ (ask first, backend/ holds the only copy of real data).
