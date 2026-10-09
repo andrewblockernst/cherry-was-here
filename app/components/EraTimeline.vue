@@ -21,8 +21,9 @@ const { names } = useCountries()
       </p>
       <ul class="mt-3 space-y-3">
         <MomentStamp
-          v-for="m in era.moments"
+          v-for="(m, k) in era.moments"
           :key="m.id"
+          :style="{ '--k': k }"
           :moment="m"
           :color="era.color"
           :country-name="m.country_code ? names[m.country_code] : undefined"

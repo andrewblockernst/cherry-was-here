@@ -55,3 +55,10 @@ export function focusFor(points: LngLat[]): CameraFocus {
   const zoom = 2.3 + Math.log2(90 / Math.max(widest, 8)) * 0.9
   return { center, zoom: Math.min(4.6, Math.max(1.8, zoom)) }
 }
+
+/** Longitude after `dtMs` of idle spin; frames longer than 100ms are clamped, the result wraps into [-180, 180). */
+export function rotateLng(lng: number, dtMs: number, degPerSec: number): number {
+  const dt = Math.min(Math.max(dtMs, 0), 100)
+  const next = lng + (degPerSec * dt) / 1000
+  return ((((next + 180) % 360) + 360) % 360) - 180
+}

@@ -63,7 +63,7 @@ async function submit() {
         visibility: visibility.value,
       },
     })
-    emit('save', {})
+    emit('save', { country_code: countryCode.value || null })
     emit('close')
   } catch (e) {
     error.value = apiError(e)

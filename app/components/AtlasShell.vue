@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { state, toggleDrawer, setDrawer, closeModal } = useAtlas()
+const { state, toggleDrawer, setDrawer, closeModal, flyTo } = useAtlas()
 const { countries } = useCountries()
 const burger = ref<HTMLButtonElement>()
 const drawer = ref<HTMLElement>()
@@ -14,6 +14,11 @@ watch(open, async (isOpen) => {
   if (isOpen) drawer.value?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')?.focus({ preventScroll: true })
   else if (drawer.value?.contains(document.activeElement)) burger.value?.focus()
 })
+
+async function onSaved(moment: { country_code?: string | null }) {
+  await refreshNuxtData('me-moments')
+  if (moment.country_code) flyTo(moment.country_code)
+}
 
 function onKeydown(e: KeyboardEvent) {
   if (e.key !== 'Escape') return
@@ -47,8 +52,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <aside
       id="atlas-drawer"
       ref="drawer"
-      class="paper fixed bottom-0 left-0 top-0 z-40 w-full border-r border-ink-700/40 shadow-[8px_0_40px_rgb(8_10_18/0.5)] md:w-[var(--drawer-w)]"
-      :class="open ? '' : 'pointer-events-none -translate-x-full'"
+      class="paper fixed bottom-0 left-0 top-0 z-40 w-full border-r border-ink-700/40 shadow-[8px_0_40px_rgb(8_10_18/0.5)] transition-[transform,visibility] duration-[650ms] ease-out-expo md:w-[var(--drawer-w)]"
+      :class="open ? 'drawer-open' : 'pointer-events-none invisible -translate-x-full'"
       aria-labelledby="atlas-drawer-title"
       :inert="!open"
     >
@@ -72,7 +77,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
       :default-country-code="state.modal.code"
       :default-country-name="state.modal.name"
       @close="closeModal"
-      @save="refreshNuxtData('me-moments')"
+      @save="onSaved"
     />
   </div>
 </template>
@@ -98,6 +103,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   text-decoration: none;
   white-space: nowrap;
 }
+@keyframes brand-in {
+  from { opacity: 0; transform: translate(-50%, -22px) rotate(-2.5deg); }
+  to { opacity: 1; transform: translate(-50%, 0) rotate(0); }
+}
+@keyframes burger-in {
+  from { opacity: 0; transform: scale(0.5) rotate(-90deg); }
+  to { opacity: 1; transform: none; }
+}
+.brand { animation: brand-in 1.2s var(--ease-out-expo) 0.5s both; }
 .brand-title { font: 600 1.45rem/1.1 var(--font-display); font-variation-settings: "SOFT" 100, "opsz" 72; letter-spacing: -0.01em; }
 .brand-title em { color: var(--color-cherry-700); font-weight: 500; }
 .brand-tag { font: 400 0.6rem/1.2 var(--font-type); letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-ink-600); }
@@ -114,7 +128,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   border: 1px solid rgb(82 61 44 / 0.55);
   border-radius: 50%;
   box-shadow: 0 4px 16px rgb(8 10 18 / 0.45), inset 0 0 0 3px var(--color-paper-100), inset 0 0 0 4px rgb(82 61 44 / 0.3);
+  animation: burger-in 0.9s var(--ease-out-expo) 0.3s both;
+  transition: scale 0.3s var(--ease-out-expo);
 }
+.burger:hover { scale: 1.07; }
+.burger:active { scale: 0.94; }
 .burger span {
   position: absolute;
   left: 50%;
@@ -124,6 +142,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   margin: -1px 0 0 -0.575rem;
   background: var(--color-ink-800);
   border-radius: 1px;
+  transition: transform 0.55s var(--ease-out-expo), opacity 0.2s ease;
 }
 .burger span:nth-child(1) { transform: translateY(-6px); }
 .burger span:nth-child(3) { transform: translateY(6px); }
@@ -131,6 +150,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 .burger.is-open span:nth-child(2) { opacity: 0; }
 .burger.is-open span:nth-child(3) { transform: rotate(-45deg); }
 
+.chip-enter-active, .chip-leave-active { transition: opacity 0.5s ease, transform 0.7s var(--ease-out-expo); }
+.chip-enter-from, .chip-leave-to { opacity: 0; transform: translate(-50%, 1.4rem); }
 .chip {
   position: fixed;
   bottom: max(1.25rem, env(safe-area-inset-bottom));

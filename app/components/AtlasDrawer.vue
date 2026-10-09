@@ -3,6 +3,7 @@ import type { PublicUserSummary, User } from '../../shared/types/cherry'
 import type { Panel } from '../composables/useAtlas'
 
 const { state, setDrawer, enter, openModal } = useAtlas()
+const { animations, reduced, enabled: motionOn, setAnimations } = useMotion()
 const { loggedIn, clear } = useUserSession()
 const { data: me } = useFetch<User>('/api/me', { key: 'me', immediate: loggedIn.value, watch: [loggedIn] })
 
@@ -142,6 +143,14 @@ async function logout() {
         <!-- Options -->
         <section v-else key="options">
           <h3 class="font-display text-3xl font-semibold text-ink-900">Opciones</h3>
+          <div class="stagger mt-5 flex items-start justify-between gap-4 border border-ink-700/25 bg-paper-50/70 p-4">
+            <div>
+              <h4 id="opt-animations" class="font-display text-lg font-semibold text-ink-900">Animaciones</h4>
+              <p class="mt-0.5 text-sm italic text-ink-600">Giro suave del globo, puntos que laten y transiciones.</p>
+              <p v-if="reduced" class="mt-1.5 text-xs text-cherry-700">Tu sistema pide reducir el movimiento, así que están desactivadas.</p>
+            </div>
+            <button class="switch mt-1" role="switch" aria-labelledby="opt-animations" :aria-checked="motionOn" :disabled="reduced" @click="setAnimations(!animations)"><span /></button>
+          </div>
           <div class="mt-8 border-t border-ink-700/25 pt-5 text-sm leading-relaxed text-ink-700">
             <h4 class="label mb-2">Acerca de</h4>
             <p class="italic">Cherry Was Here es un atlas personal: cada uno marca los países donde estuvo y los moments que lo marcaron.</p>

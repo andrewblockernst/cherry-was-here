@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { countryFillExpression, focusFor, groupByEra, momentFeatures } from '../app/utils/globe'
+import { countryFillExpression, focusFor, groupByEra, momentFeatures, rotateLng } from '../app/utils/globe'
 import type { Era, Moment } from '../shared/types/cherry'
 
 const moment = (over: Partial<Moment>): Moment => ({
@@ -93,5 +93,25 @@ describe('focusFor', () => {
 
   it('falls back to the world when points cancel out', () => {
     expect(focusFor([[0, 0], [180, 0]]).zoom).toBe(2)
+  })
+})
+
+describe('rotateLng', () => {
+  it('advances by degrees per second', () => {
+    expect(rotateLng(10, 100, 6)).toBeCloseTo(10.6)
+    expect(rotateLng(10, 50, 6)).toBeCloseTo(10.3)
+  })
+
+  it('wraps into [-180, 180)', () => {
+    expect(rotateLng(179.8, 100, 6)).toBeCloseTo(-179.6)
+    expect(rotateLng(-180, 100, 6)).toBeGreaterThanOrEqual(-180)
+  })
+
+  it('clamps long frames so a throttled tab does not spin the globe', () => {
+    expect(rotateLng(0, 60_000, 6)).toBeCloseTo(0.6)
+  })
+
+  it('ignores negative elapsed time', () => {
+    expect(rotateLng(5, -50, 6)).toBe(5)
   })
 })

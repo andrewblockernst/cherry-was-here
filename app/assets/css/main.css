@@ -126,7 +126,7 @@ button { cursor: pointer; }
 /* Cancellation mark that overlaps the stamp corner. */
 .postmark {
   position: absolute;
-  right: -4px;
+  right: -2px;
   top: -8px;
   display: grid;
   place-items: center;
@@ -211,3 +211,64 @@ button { cursor: pointer; }
 .popup-stamp { min-width: 8.5rem; padding: 0.7rem 1.1rem 0.65rem; }
 .popup-title { font: 600 0.95rem/1.2 var(--font-display); color: var(--color-ink-900); }
 .popup-date { margin-top: 0.2rem; font: 400 0.66rem/1 var(--font-type); letter-spacing: 0.1em; color: var(--color-ink-600); }
+
+/* ---- Motion ---- */
+.globe { opacity: 0; transition: opacity 1.6s var(--ease-out-quart); }
+.globe.is-ready { opacity: 1; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+/* Items of the open drawer rise in one after another; replays every time the drawer opens. */
+.drawer-open .stagger,
+.drawer-open .era,
+.drawer-open .stamp-item {
+  animation: rise 0.7s var(--ease-out-expo) both;
+  animation-delay: calc(180ms + var(--i, 0) * 70ms + var(--k, 0) * 60ms);
+}
+
+.panel-enter-active, .panel-leave-active { transition: opacity 0.28s var(--ease-out-quart), transform 0.38s var(--ease-out-quart); }
+.panel-enter-from { opacity: 0; transform: translateX(18px); }
+.panel-leave-to { opacity: 0; transform: translateX(-18px); }
+
+.modal-enter-active, .modal-leave-active { transition: opacity 0.25s ease; }
+.modal-enter-active .modal-card, .modal-leave-active .modal-card { transition: transform 0.5s var(--ease-out-expo), opacity 0.25s ease; }
+.modal-enter-from, .modal-leave-to { opacity: 0; }
+.modal-enter-from .modal-card { opacity: 0; transform: translateY(26px) scale(0.96) rotate(-0.8deg); }
+.modal-leave-to .modal-card { opacity: 0; transform: translateY(10px) scale(0.98); }
+
+/* On/off switch for the animations option. */
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.9rem;
+  height: 1.6rem;
+  border: 1px solid var(--color-ink-600);
+  border-radius: 999px;
+  background: var(--color-paper-200);
+  transition: background-color 0.3s ease;
+}
+.switch > span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(1.6rem - 6px);
+  height: calc(1.6rem - 6px);
+  border-radius: 50%;
+  background: var(--color-ink-700);
+  transition: transform 0.4s var(--ease-out-expo), background-color 0.3s ease;
+}
+.switch[aria-checked="true"] { background: var(--color-cherry-100); }
+.switch[aria-checked="true"] > span { transform: translateX(1.3rem); background: var(--color-cherry-700); }
+.switch:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Motion off (in-app toggle or OS setting): no animation or transition anywhere. */
+[data-motion="off"] *, [data-motion="off"] *::before, [data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
