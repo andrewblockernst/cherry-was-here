@@ -31,8 +31,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 <template>
   <div>
-    <NuxtLink to="/" class="brand" aria-label="La vida es una, inicio">
-      <span class="brand-title">La vida <em>es</em> una</span>
+    <NuxtLink to="/" class="brand" aria-label="yafue, inicio">
+      <span class="brand-title">ya<em>fue</em></span>
       <span class="brand-tag">un atlas de momentos</span>
     </NuxtLink>
 

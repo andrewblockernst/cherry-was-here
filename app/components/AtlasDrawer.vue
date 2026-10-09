@@ -153,7 +153,7 @@ async function logout() {
           </div>
           <div class="mt-8 border-t border-ink-700/25 pt-5 text-sm leading-relaxed text-ink-700">
             <h4 class="label mb-2">Acerca de</h4>
-            <p class="italic">La vida es una es un atlas personal: cada uno marca los países donde estuvo y los moments que lo marcaron.</p>
+            <p class="italic">yafue es un atlas personal: cada uno marca los países donde estuvo y los moments que lo marcaron.</p>
             <p class="mt-3 text-xs text-ink-500">Mapa: OpenFreeMap · © OpenMapTiles · datos © colaboradores de OpenStreetMap.</p>
           </div>
         </section>

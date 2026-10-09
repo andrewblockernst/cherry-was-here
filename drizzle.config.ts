@@ -5,7 +5,7 @@ export default defineConfig({
   schema: './server/db/schema.ts',
   out: './server/db/migrations',
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? 'file:./data/lavidaesuna.db',
+    url: process.env.DATABASE_URL ?? 'file:./data/yafue.db',
     authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
   },
 })

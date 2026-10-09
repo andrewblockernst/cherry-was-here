@@ -17,7 +17,7 @@ watchEffect(() => {
     eras: groupByEra(erasData.value?.eras ?? [], moments),
   })
 })
-useHead({ title: 'Tu vida · La vida es una' })
+useHead({ title: 'Tu vida · yafue' })
 </script>
 
 <template>
