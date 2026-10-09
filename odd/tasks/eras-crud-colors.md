@@ -24,7 +24,7 @@ Let users fully manage their eras from the UI and choose colors per era and per 
 - [x] T2 Globe colors: effective color helper, colored points and country fill expression, tests. Route: delegated writer.
 - [x] T3 Era editor UI in the "Tu vida" drawer. Route: delegated writer.
 - [x] T4 Moment edit + color override in the modal and stamp. Route: delegated writer.
-- [ ] T5 README update. Route: delegated writer.
+- [x] T5 README update. Route: delegated writer.
 - [x] T6 Brand label: plain "yafue", top-right aligned with the hamburger, no tagline. Route: inline (mechanical).
 
 Route evidence: 4+ files to understand and 2+ non-trivial files to write, so mapping and writing are delegated.
@@ -49,3 +49,5 @@ Route evidence: 4+ files to understand and 2+ non-trivial files to write, so map
 - T3: EraEditor modal (create/edit/delete/reorder, color picker + swatches + live preview) from "Tu vida"; `npm test` 52 passed, `npx nuxi typecheck` clean.
 - T3 commit: d99d02e.
 - T4: moment edit mode + optional own color with inherited preview, stamp edit button; `npm test` 52 passed, `npx nuxi typecheck` clean.
+- T4 commit: d1acb23.
+- T5: README updated.
