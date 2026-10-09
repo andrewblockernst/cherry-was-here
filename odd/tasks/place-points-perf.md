@@ -30,3 +30,4 @@ Let a moment be pinned to a province/state/county/city as a colored point (count
 ## Progress / evidence
 - Branch `feature/place-points-perf` (stacked on `fix/stamp-action-buttons`).
 - T1 commit fa092f6: Photon place search (`app/utils/geocode.ts`, `AddMomentModal.vue`), lat/lng payload; server already validated lat/lng (test added). RED: `tests/geocode.test.ts` failed (module missing) -> GREEN 5/5. Photon rejects `lang=es` (HTTP 400), so `lang=default` is used. Checks: npm test 61 passed, nuxi typecheck exit 0.
+- T2 commit 2ed748c: parallel geojson+style fetch, intro ease 3800->1500 ms, shell delays <=0.15 s (stagger base 60 ms), routeRules cache for `/geo/**` and `/api/countries`, drawer skeleton for `me`, parallel fetches in `me.vue`. Checks: npm test 61 passed, nuxi typecheck exit 0, npm run build complete.
